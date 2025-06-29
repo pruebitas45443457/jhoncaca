@@ -1,0 +1,162 @@
+.ganancias-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2.5rem;
+  background: linear-gradient(135deg, #232526 60%, #2b5876 100%);
+  border-radius: 22px;
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 8px 32px rgba(33,161,243,0.18), 0 1.5px 8px rgba(0,0,0,0.10);
+  color: #fff;
+}
+
+.ganancias-panel h2 {
+  color: #61dafb;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.ganancias-opciones {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2.2rem;
+  margin-bottom: 2.2rem;
+}
+
+.ganancia-btn {
+  background: linear-gradient(90deg, #61dafb 60%, #21a1f3 100%);
+  color: #181a1b;
+  border: none;
+  border-radius: 30px;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 16px #21a1f344;
+  transition: background 0.18s, color 0.18s, transform 0.13s;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.ganancia-btn.active,
+.ganancia-btn:hover {
+  background: linear-gradient(90deg, #21a1f3 60%, #61dafb 100%);
+  color: #fff;
+  transform: scale(1.04);
+}
+
+.ganancias-content {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.ganancia-detalle {
+  background: #181a1b;
+  border-radius: 16px;
+  padding: 1.5rem 1.2rem;
+  box-shadow: 0 2px 8px #21a1f322;
+  color: #fff;
+  text-align: center;
+}
+
+.ganancia-detalle h3 {
+  color: #61dafb;
+  margin-bottom: 0.7rem;
+  font-size: 1.3rem;
+}
+
+.ganancias-historial {
+  width: 100%;
+  margin-bottom: 2.5rem;
+  overflow-x: auto;
+}
+.ganancias-historial table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #181a1b;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px #21a1f322;
+}
+.ganancias-historial th, .ganancias-historial td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  font-size: 1.1rem;
+}
+.ganancias-historial th {
+  background: #232526;
+  color: #61dafb;
+  font-weight: 700;
+}
+.ganancias-historial tr:nth-child(even) {
+  background: #23252644;
+}
+.ganancias-historial tr:nth-child(odd) {
+  background: #23252622;
+}
+.ganancias-historial td {
+  color: #fff;
+}
+
+.ganancias-opciones {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.ganancia-btn {
+  background: linear-gradient(90deg, #61dafb 60%, #21a1f3 100%);
+  color: #181a1b;
+  border: none;
+  border-radius: 30px;
+  padding: 1rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 16px #21a1f344;
+  transition: background 0.18s, color 0.18s, transform 0.13s;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.ganancia-btn:hover {
+  background: linear-gradient(90deg, #21a1f3 60%, #61dafb 100%);
+  color: #fff;
+  transform: scale(1.04);
+}
+
+.ganancia-detalle {
+  background: #181a1b;
+  border-radius: 16px;
+  padding: 1.5rem 1.2rem;
+  box-shadow: 0 2px 8px #21a1f322;
+  color: #fff;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.ganancia-detalle h3 {
+  color: #61dafb;
+  margin-bottom: 0.7rem;
+  font-size: 1.3rem;
+}
+
+@media (max-width: 700px) {
+  .ganancias-panel {
+    padding: 1.2rem 0.5rem;
+    max-width: 98vw;
+  }
+  .ganancias-opciones {
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    align-items: stretch;
+  }
+}

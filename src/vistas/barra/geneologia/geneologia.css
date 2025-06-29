@@ -1,0 +1,92 @@
+.gene-arbol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2.5rem;
+  gap: 2.5rem;
+}
+
+.gene-nivel {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.gene-nodo {
+  background: linear-gradient(135deg, #232526 60%, #2b5876 100%);
+  border-radius: 22px;
+  padding: 1.5rem 2rem;
+  min-width: 180px;
+  box-shadow: 0 4px 24px #21a1f344;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.gene-nodo-yo {
+  border: 3px solid #61dafb;
+  z-index: 2;
+}
+
+.gene-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #61dafb 60%, #21a1f3 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #232526;
+  font-weight: bold;
+  margin-bottom: 0.7rem;
+  box-shadow: 0 2px 8px #21a1f344;
+}
+
+.gene-nombre {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #61dafb;
+  margin-bottom: 0.2rem;
+}
+
+.gene-email {
+  font-size: 0.95rem;
+  color: #b0eaff;
+  margin-bottom: 0.2rem;
+}
+
+.gene-label {
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+}
+
+.gene-vacio {
+  color: #ff5252;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.gene-invitado {
+  margin-top: 0.7rem;
+  background: #181a1b;
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  box-shadow: 0 2px 8px #21a1f322;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .gene-nivel {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .gene-nodo {
+    min-width: 90vw;
+  }
+}

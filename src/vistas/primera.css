@@ -1,0 +1,305 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(120deg, #e3f2fd 0%, #f5faff 100%);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 230px;
+  background: rgba(21, 101, 192, 0.90);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding-top: 2rem;
+  border-radius: 0 2rem 2rem 0;
+  box-shadow: 2px 0 24px #2196f322;
+  backdrop-filter: blur(8px);
+}
+
+.sidebar-logo {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #2196f3;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: 1.2rem;
+}
+
+.sidebar nav ul li.active,
+.sidebar nav ul li:hover {
+  background: linear-gradient(90deg, #fff 60%, #e3f2fd 100%);
+  color: #1565c0;
+  font-weight: bold;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px; /* antes 90px */
+  background: rgba(255,255,255,0.85);
+  color: #1565c0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem; /* antes 2.5rem */
+  box-shadow: 0 2px 8px #2196f322;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 2px solid #2196f3;
+  border-radius: 0; /* <-- Cambia esto */
+  backdrop-filter: blur(8px);
+}
+
+.topbar-userbox {
+  display: flex;
+  align-items: center;
+  gap: 1.3rem;
+}
+
+.topbar-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2196f3 60%, #0d47a1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 2px 12px #2196f344;
+  border: 3px solid #fff;
+}
+
+.topbar-username {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #2196f3;
+  letter-spacing: 1.2px;
+  text-shadow: 0 2px 12px #2196f344;
+}
+
+.topbar-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #1565c0;
+  text-shadow: 0 2px 8px #2196f344;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* Quita height para que no empuje el contenido hacia abajo */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-start;
+}
+
+/* Sube aún más el contenido principal */
+.content {
+  flex: 1;
+  padding: 0 !important; /* Sin padding arriba ni a los lados */
+  color: #0d47a1;
+  font-size: 1.15rem;
+  min-height: 0;
+  height: auto;
+  box-sizing: border-box;
+  margin: 0;
+  background: rgba(255,255,255,0.93);
+  border-radius: 0 0 2rem 2rem; /* <-- Solo redondeado abajo */
+  box-shadow: 0 2px 16px #2196f322;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Elimina margen superior del título */
+.content > h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1565c0;
+  letter-spacing: 1px;
+}
+
+.enlaces-panel {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  margin: 2.5rem 0 0 0;
+  flex-wrap: wrap;
+}
+
+.enlace-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.5rem 1.2rem;
+  min-width: 220px;
+  max-width: 340px;
+  box-shadow: 0 2px 16px #2196f322;
+  margin-bottom: 1rem;
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.18s, box-shadow 0.18s;
+  border: 2px solid #e3f2fd;
+}
+
+.enlace-card.left {
+  border-left: 5px solid #2196f3;
+}
+.enlace-card.right {
+  border-right: 5px solid #0d47a1;
+}
+.enlace-card.tienda {
+  border-bottom: 5px solid #2196f3;
+  background: linear-gradient(90deg, #e3f2fd22 60%, #2196f322 100%);
+}
+
+.enlace-card h4 {
+  color: #2196f3;
+  margin-bottom: 0.7rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.enlace-card a {
+  color: #0d47a1;
+  word-break: break-all;
+  text-decoration: underline;
+  font-size: 1.05rem;
+  background: #f5faff;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.enlace-card a:hover {
+  background: #2196f3;
+  color: #fff;
+  text-decoration: none;
+}
+
+.copy-btn {
+  margin-top: 1rem;
+  background: linear-gradient(90deg, #2196f3 60%, #0d47a1 100%);
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.5rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, transform 0.13s;
+  box-shadow: 0 2px 8px #2196f322;
+}
+.copy-btn:hover {
+  background: linear-gradient(90deg, #0d47a1 60%, #2196f3 100%);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.manual-btn {
+  background: linear-gradient(90deg, #2196f3 60%, #0d47a1 100%);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 4px 16px #2196f344;
+  transition: background 0.18s, color 0.18s, transform 0.13s;
+  display: inline-block;
+}
+.manual-btn:hover {
+  background: linear-gradient(90deg, #0d47a1 60%, #2196f3 100%);
+  color: #fff;
+  transform: scale(1.04);
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 60px;
+    padding-top: 1rem;
+  }
+  .sidebar-logo {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .sidebar nav ul li {
+    padding: 1rem 0.5rem;
+    font-size: 1rem;
+    justify-content: center;
+  }
+  .main-content {
+    padding-left: 0;
+  }
+  .content {
+    padding: 0.7rem 0.5rem 1.2rem 0.5rem;
+  }
+  .content > h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .enlaces-panel {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+  }
+  .enlace-card {
+    max-width: 100%;
+  }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 1rem 1.2rem;
+    gap: 0.5rem;
+  }
+  .topbar-userbox {
+    gap: 0.7rem;
+  }
+  .topbar-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+  }
+  .topbar-username {
+    font-size: 1.1rem;
+  }
+  .topbar-title {
+    font-size: 1.1rem;
+  }
+}

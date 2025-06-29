@@ -1,0 +1,295 @@
+body {
+  background: linear-gradient(120deg, #181a1b 0%, #232526 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+.comprar-form, .comprar-info-flex {
+  background: linear-gradient(135deg, #232526 60%, #2b5876 100%);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(33,161,243,0.18), 0 1.5px 8px rgba(0,0,0,0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 950px;
+  margin: 2.5rem auto 2rem auto;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  position: relative;
+}
+
+.comprar-info-flex {
+  flex-direction: row;
+  gap: 2.5rem;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #232526 60%, #2b5876 100%);
+  box-shadow: 0 8px 32px rgba(33,161,243,0.18), 0 1.5px 8px rgba(0,0,0,0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.comprar-info-izq, .comprar-info-der {
+  background: rgba(24,26,27,0.95);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px #21a1f322;
+  padding: 1.5rem 1.2rem;
+}
+
+.comprar-info-izq {
+  flex: 2;
+  min-width: 220px;
+  margin-right: 1.5rem;
+}
+
+.comprar-info-der {
+  flex: 1;
+  min-width: 160px;
+  margin-top: 0;
+}
+
+.comprar-info-izq h2, .comprar-form h2 {
+  color: #61dafb;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.comprar-info-izq div {
+  font-size: 1.13rem;
+  margin-bottom: 0.7rem;
+  color: #fff;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.comprar-label {
+  color: #61dafb;
+  font-weight: 700;
+  min-width: 90px;
+  display: inline-block;
+}
+
+.comprar-dato {
+  color: #fff;
+  font-weight: 400;
+  word-break: break-word;
+}
+
+.comprar-info-der h3 {
+  color: #21a1f3;
+  margin-bottom: 0.7rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.comprar-comentario {
+  background: #181a1b;
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem;
+  min-height: 70px;
+  color: #fff;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 8px #21a1f322;
+  word-break: break-word;
+}
+
+.comprar-form label {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: #b0eaff;
+  letter-spacing: 0.5px;
+}
+
+.comprar-form input,
+.comprar-form textarea {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  border: none;
+  font-size: 1.1rem;
+  margin-bottom: 1.1rem;
+  background: #232526;
+  color: #fff;
+  box-shadow: 0 2px 8px #21a1f322;
+  outline: none;
+  transition: box-shadow 0.2s, border 0.2s;
+  resize: none;
+}
+
+.comprar-form input:focus,
+.comprar-form textarea:focus {
+  box-shadow: 0 0 0 2px #61dafb;
+  border: 1.5px solid #61dafb;
+}
+
+.comprar-form textarea {
+  min-height: 70px;
+  max-height: 180px;
+}
+
+.comprar-form button,
+.comprar-info button {
+  background: linear-gradient(90deg, #61dafb 60%, #21a1f3 100%);
+  color: #181a1b;
+  border: none;
+  border-radius: 30px;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 4px 16px #21a1f344;
+  transition: background 0.18s, color 0.18s, transform 0.13s;
+  display: inline-block;
+  margin-top: 1.2rem;
+  cursor: pointer;
+}
+.comprar-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.comprar-form button:hover,
+.comprar-info button:hover {
+  background: linear-gradient(90deg, #21a1f3 60%, #61dafb 100%);
+  color: #fff;
+  transform: scale(1.04);
+}
+
+.productos-titulo {
+  margin: 3rem 0 1.5rem 0;
+  text-align: center;
+}
+.productos-titulo h2 {
+  color: #21a1f3;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.2rem;
+  margin: 0 auto 3rem auto;
+  max-width: 1100px;
+}
+
+.producto-card {
+  background: linear-gradient(135deg, #232526 60%, #2b5876 100%);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px #21a1f344;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s, box-shadow 0.18s;
+  border: 2.5px solid transparent;
+  position: relative;
+}
+.producto-card:hover {
+  transform: translateY(-7px) scale(1.03);
+  box-shadow: 0 8px 32px #21a1f366;
+  border-color: #61dafb;
+}
+
+.producto-img {
+  width: 100%;
+  height: 170px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 18px 18px 0 0;
+}
+
+.producto-info {
+  padding: 1.3rem 1.2rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  flex: 1;
+}
+
+.producto-nombre {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #61dafb;
+  margin-bottom: 0.2rem;
+}
+
+.producto-desc {
+  color: #b0eaff;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  min-height: 48px;
+}
+
+.producto-precio {
+  color: #1eea7b;
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+
+.producto-btn {
+  background: linear-gradient(90deg, #61dafb 60%, #21a1f3 100%);
+  color: #181a1b;
+  border: none;
+  border-radius: 30px;
+  padding: 0.9rem 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 16px #21a1f344;
+  transition: background 0.18s, color 0.18s, transform 0.13s;
+  margin-top: auto;
+  width: 100%;
+}
+.producto-btn:hover {
+  background: linear-gradient(90deg, #21a1f3 60%, #61dafb 100%);
+  color: #fff;
+  transform: scale(1.04);
+}
+
+@media (max-width: 900px) {
+  .comprar-info-flex {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.2rem 0.5rem;
+    max-width: 99vw;
+  }
+  .comprar-info-izq, .comprar-info-der {
+    margin-right: 0;
+    margin-top: 0;
+    padding: 1.2rem 0.7rem;
+  }
+  .productos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .producto-img {
+    height: 130px;
+  }
+}
+
+@media (max-width: 600px) {
+  .comprar-form, .comprar-info-flex {
+    padding: 1.2rem 0.5rem;
+    max-width: 99vw;
+  }
+  .comprar-form h2, .comprar-info-izq h2 {
+    font-size: 1.3rem;
+  }
+  .comprar-form button, .comprar-info button {
+    font-size: 1rem;
+    padding: 0.8rem 0;
+  }
+  .comprar-form input, .comprar-form textarea {
+    font-size: 1rem;
+    padding: 0.7rem 0.7rem;
+  }
+}
