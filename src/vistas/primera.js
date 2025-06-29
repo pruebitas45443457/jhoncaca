@@ -6,6 +6,7 @@ import Perfil from './perfil'; // Agrega este import
 import Ganancias from './barra/ganancias';
 import Genealogia from './barra/geneologia/geneologia';
 import Comprar from './barra/comprar/comprar';
+import Ordenes from './barra/ordenes/ordenes'; // Agrega este import
 
 function Sidebar({ active, onSelect }) {
   return (
@@ -142,7 +143,7 @@ function Primera() {
               <EnlacesPanel enlaces={enlaces} />
             </>
           )}
-          {active === 'network' && <h2>Tu Red de Referidos</h2>}
+          {active === 'network' && <Ordenes />} {/* Cambia aquí para mostrar Ordenes */}
           {active === 'genealogia' && <Genealogia />}
           {active === 'ganancias' && <Ganancias />}
           {active === 'perfil' && <Perfil userData={userData} />}

@@ -7,6 +7,7 @@ import Primera from './vistas/primera';
 import Home2 from './vistas/usuario/home2';
 import Producto from './vistas/usuario/producto';
 import Principal2 from './vistas/usuario/principal2'; // Asegúrate de importar el componente
+import Perfil from "./vistas/usuario/perfil";
 
 function Navbar({ user, onLogout, onShowLogin, onShowRegister }) {
   return (
@@ -163,6 +164,7 @@ function App() {
           <Route path="/usuario/home2" element={<Home2 />} />
           <Route path="/producto/:nombre" element={<Producto />} />
           <Route path="/usuario/principal2" element={<Principal2 />} />
+          <Route path="/perfil" element={<Perfil />} />
         </Routes>
       </div>
     </Router>

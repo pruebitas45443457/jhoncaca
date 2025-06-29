@@ -1,44 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./home2.css";
 import Registro from "../registro";
-import Login from "../login"; // <--- IMPORTA LOGIN
-
-const productos = [
-	{
-		nombre: "Suplemento Premium",
-		descripcion: "Mejora tu energía y bienestar con ingredientes naturales.",
-		precio: 29.99,
-		imagen:
-			"https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-	},
-	{
-		nombre: "Proteína Vegana",
-		descripcion: "Ideal para recuperación muscular y dietas saludables.",
-		precio: 39.99,
-		imagen:
-			"https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80",
-	},
-	{
-		nombre: "Vitaminas Complejas",
-		descripcion: "Refuerza tu sistema inmune con vitaminas esenciales.",
-		precio: 19.99,
-		imagen:
-			"https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-	},
-	{
-		nombre: "Bebida Detox",
-		descripcion: "Limpia tu organismo y siente la diferencia.",
-		precio: 24.99,
-		imagen:
-			"https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80",
-	},
-];
+import Login from "../login";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase"; // ✅ Usa el export correcto
 
 function Home2() {
 	const navigate = useNavigate();
 	const [showRegistro, setShowRegistro] = useState(false);
 	const [showLogin, setShowLogin] = useState(false);
+	const [productos, setProductos] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchProductos = async () => {
+			try {
+				const productosCol = collection(db, "productos");
+				const productosSnap = await getDocs(productosCol);
+				const productosList = productosSnap.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setProductos(productosList);
+			} catch (error) {
+				console.error("Error al traer productos:", error);
+			}
+			setLoading(false);
+		};
+		fetchProductos();
+	}, []);
 
 	function handleCardClick(producto) {
 		navigate(`/producto/${encodeURIComponent(producto.nombre)}`, { state: { producto } });
@@ -89,7 +80,6 @@ function Home2() {
 				<h2>Productos Destacados</h2>
 			</div>
 
-			{/* Barra de búsqueda visual */}
 			<div className="productos-searchbar">
 				<input
 					type="text"
@@ -100,35 +90,45 @@ function Home2() {
 			</div>
 
 			<div className="productos-grid">
-				{productos.map((prod, i) => (
-					<div
-						className="producto-card"
-						key={i}
-						onClick={() => handleCardClick(prod)}
-						style={{ cursor: "pointer" }}
-					>
-						<div
-							className="producto-img"
-							style={{ backgroundImage: `url(${prod.imagen})` }}
-						/>
-						<div className="producto-info" onClick={e => e.stopPropagation()}>
-							<div className="producto-nombre">{prod.nombre}</div>
-							<div className="producto-desc">{prod.descripcion}</div>
-							<div className="producto-precio">
-								${prod.precio.toFixed(2)}
-							</div>
-							<button
-								className="producto-btn"
-								onClick={e => {
-									e.stopPropagation();
-									handleComprar(prod.nombre);
-								}}
-							>
-								Comprar
-							</button>
-						</div>
+				{loading ? (
+					<div style={{ color: "#1976d2", fontWeight: 700, fontSize: 20, margin: "2rem auto" }}>
+						Cargando productos...
 					</div>
-				))}
+				) : productos.length === 0 ? (
+					<div style={{ color: "#888", fontSize: 18, margin: "2rem auto" }}>
+						No hay productos disponibles.
+					</div>
+				) : (
+					productos.map((prod, i) => (
+						<div
+							className="producto-card"
+							key={prod.id || i}
+							onClick={() => handleCardClick(prod)}
+							style={{ cursor: "pointer" }}
+						>
+							<div
+								className="producto-img"
+								style={{ backgroundImage: `url(${prod.imagen || ""})` }}
+							/>
+							<div className="producto-info" onClick={e => e.stopPropagation()}>
+								<div className="producto-nombre">{prod.nombre}</div>
+								<div className="producto-desc">{prod.descripcion}</div>
+								<div className="producto-precio">
+									${prod.precio?.toFixed ? prod.precio.toFixed(2) : prod.precio}
+								</div>
+								<button
+									className="producto-btn"
+									onClick={e => {
+										e.stopPropagation();
+										handleComprar(prod.nombre);
+									}}
+								>
+									Comprar
+								</button>
+							</div>
+						</div>
+					))
+				)}
 			</div>
 
 			{/* Modal de registro */}

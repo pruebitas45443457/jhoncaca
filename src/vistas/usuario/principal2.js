@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./home2.css";
+import Carrito from "./carro/carrito";
 
 const productos = [
   {
@@ -65,11 +66,20 @@ function renderStars(rating) {
 
 function Principal2() {
   const [busqueda, setBusqueda] = useState("");
-  const [carrito, setCarrito] = useState([]);
+  const [carrito, setCarrito] = useState(() => {
+    // Recupera el carrito del localStorage al cargar
+    const guardado = localStorage.getItem("carrito");
+    return guardado ? JSON.parse(guardado) : [];
+  });
   const [mostrarCarrito, setMostrarCarrito] = useState(false);
   const [mostrarPerfil, setMostrarPerfil] = useState(false);
   const mainRef = useRef(null);
   const navigate = useNavigate();
+
+  // Guarda el carrito en localStorage cada vez que cambia
+  useEffect(() => {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }, [carrito]);
 
   // Scroll al top al cambiar de vista principal
   useEffect(() => {
@@ -87,7 +97,18 @@ function Principal2() {
   );
 
   function agregarAlCarrito(producto) {
-    setCarrito((prev) => [...prev, producto]);
+    // Si ya existe, suma cantidad
+    setCarrito((prev) => {
+      const existe = prev.find((p) => p.nombre === producto.nombre);
+      if (existe) {
+        return prev.map((p) =>
+          p.nombre === producto.nombre
+            ? { ...p, cantidad: (p.cantidad || 1) + 1 }
+            : p
+        );
+      }
+      return [...prev, { ...producto, cantidad: 1 }];
+    });
   }
 
   function quitarDelCarrito(index) {
@@ -95,7 +116,27 @@ function Principal2() {
   }
 
   function totalCarrito() {
-    return carrito.reduce((acc, prod) => acc + prod.precio, 0).toFixed(2);
+    return carrito.reduce(
+      (acc, prod) => acc + prod.precio * (prod.cantidad || 1),
+      0
+    ).toFixed(2);
+  }
+
+  // Para pasar props y lógica avanzada al Carrito.js
+  function handleVaciarCarrito() {
+    setCarrito([]);
+  }
+  function handleEliminarProducto(id) {
+    setCarrito(carrito.filter((prod) => prod.nombre !== id));
+  }
+  function handleCambiarCantidad(id, cantidad) {
+    setCarrito(
+      carrito.map((prod) =>
+        prod.nombre === id
+          ? { ...prod, cantidad: Math.max(1, cantidad) }
+          : prod
+      )
+    );
   }
 
   return (
@@ -104,90 +145,55 @@ function Principal2() {
         display: "flex",
         minHeight: "100vh",
         background: "linear-gradient(120deg, #e3f2fd 60%, #fff 100%)",
-        alignItems: "stretch",
         width: "100vw",
         overflowX: "hidden",
       }}
     >
-      {/* Barra lateral avanzada */}
+      {/* Barra lateral minimalista avanzada */}
       <aside
         style={{
-          width: 270,
-          background: "linear-gradient(160deg, #1976d2 80%, #2196f3 100%)",
+          width: 80,
+          background: "rgba(25, 118, 210, 0.98)",
           color: "#fff",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: "2.2rem 0 1.5rem 0",
-          borderRadius: "0 2.5rem 2.5rem 0",
+          padding: "1.5rem 0 1.5rem 0",
+          borderRadius: "0 2.2rem 2.2rem 0",
           boxShadow: "8px 0 32px #1976d244",
           minHeight: "100vh",
           position: "fixed",
           left: 0,
           top: 0,
           bottom: 0,
-          zIndex: 20,
+          zIndex: 30,
           borderRight: "2.5px solid #e3f2fd",
           transition: "box-shadow 0.3s",
+          gap: 22,
+          backdropFilter: "blur(2px)",
         }}
       >
-        {/* Logo y avatar */}
+        {/* Logo animado */}
         <div
           style={{
-            width: "100%",
+            width: 54,
+            height: 54,
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, #fff 60%, #e3f2fd 100%)",
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
-            marginBottom: "2.5rem",
+            justifyContent: "center",
+            marginBottom: 18,
+            boxShadow: "0 2px 16px #2196f344",
+            border: "2px solid #2196f3",
+            animation: "spinLogo 2.5s linear infinite alternate",
           }}
         >
-          <div
-            style={{
-              width: 70,
-              height: 70,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #fff 60%, #2196f3 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 16,
-              boxShadow: "0 2px 16px #2196f344",
-              border: "3px solid #fff",
-            }}
-          >
-            <span style={{ fontSize: 38, color: "#1976d2", fontWeight: 900 }}>
-              🛍️
-            </span>
-          </div>
-          <span
-            style={{
-              background: "linear-gradient(90deg, #fff 60%, #2196f3 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              fontWeight: 900,
-              fontSize: "2.1rem",
-              letterSpacing: "3px",
-              textShadow: "0 2px 12px #1565c088",
-              userSelect: "none",
-              marginBottom: 2,
-            }}
-          >
-            Tienda Azul
-          </span>
-          <span
-            style={{
-              color: "#e3f2fd",
-              fontSize: 15,
-              opacity: 0.8,
-              marginTop: 2,
-              fontWeight: 500,
-              letterSpacing: 1,
-            }}
-          >
-            Bienvenido, usuario_demo
+          <span style={{ fontSize: 32, color: "#1976d2", fontWeight: 900 }}>
+            🛍️
           </span>
         </div>
-        {/* Navegación */}
+        {/* Navegación minimalista avanzada */}
         <nav style={{ width: "100%" }}>
           <ul
             style={{
@@ -197,177 +203,213 @@ function Principal2() {
               width: "100%",
               display: "flex",
               flexDirection: "column",
-              gap: 6,
+              gap: 18,
+              alignItems: "center",
             }}
           >
             <li
               style={{
-                padding: "1.1rem 2rem",
-                cursor: "pointer",
-                fontWeight: "bold",
+                width: 54,
+                height: 54,
+                borderRadius: "50%",
                 background:
-                  !mostrarPerfil && !mostrarCarrito
-                    ? "rgba(255,255,255,0.16)"
-                    : "transparent",
-                borderRadius: "1.3rem",
-                margin: "0.5rem 1.2rem",
-                transition: "background 0.2s, color 0.2s, box-shadow 0.2s",
-                color:
-                  !mostrarPerfil && !mostrarCarrito ? "#fff" : "#e3f2fd",
-                boxShadow:
-                  !mostrarPerfil && !mostrarCarrito
-                    ? "0 2px 16px #2196f366"
-                    : "none",
+                  !mostrarPerfil && !mostrarCarrito ? "#fff4" : "transparent",
                 display: "flex",
                 alignItems: "center",
-                gap: 14,
-                fontSize: 18,
-                letterSpacing: 1,
+                justifyContent: "center",
+                cursor: "pointer",
+                fontSize: 27,
+                color: !mostrarPerfil && !mostrarCarrito ? "#1976d2" : "#e3f2fd",
+                boxShadow:
+                  !mostrarPerfil && !mostrarCarrito ? "0 2px 12px #2196f366" : "none",
                 border: "none",
+                transition:
+                  "background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s",
+                position: "relative",
               }}
+              title="Productos"
               onClick={() => {
                 setMostrarPerfil(false);
                 setMostrarCarrito(false);
               }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.transform = "scale(1.08)")
+              }
+              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
             >
-              <span
-                style={{
-                  fontSize: 25,
-                  filter:
-                    !mostrarPerfil && !mostrarCarrito
-                      ? "drop-shadow(0 2px 6px #fff8)"
-                      : "none",
-                }}
-              >
+              <span style={{ filter: "drop-shadow(0 2px 6px #2196f366)" }}>
                 🏠
               </span>
-              Productos
+              {!mostrarPerfil && !mostrarCarrito && (
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 6,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    fontSize: 10,
+                    color: "#1976d2",
+                    fontWeight: 700,
+                    letterSpacing: 1,
+                    opacity: 0.8,
+                  }}
+                >
+                  Home
+                </span>
+              )}
             </li>
             <li
               style={{
-                padding: "1.1rem 2rem",
-                cursor: "pointer",
-                borderRadius: "1.3rem",
-                margin: "0.5rem 1.2rem",
-                background:
-                  mostrarCarrito ? "rgba(255,255,255,0.16)" : "transparent",
-                transition: "background 0.2s, color 0.2s, box-shadow 0.2s",
-                color: mostrarCarrito ? "#fff" : "#e3f2fd",
-                boxShadow:
-                  mostrarCarrito ? "0 2px 16px #2196f366" : "none",
+                width: 54,
+                height: 54,
+                borderRadius: "50%",
+                background: mostrarCarrito ? "#fff4" : "transparent",
                 display: "flex",
                 alignItems: "center",
-                gap: 14,
-                fontSize: 18,
-                letterSpacing: 1,
+                justifyContent: "center",
+                cursor: "pointer",
+                fontSize: 27,
+                color: mostrarCarrito ? "#1976d2" : "#e3f2fd",
+                boxShadow: mostrarCarrito ? "0 2px 12px #2196f366" : "none",
                 border: "none",
+                position: "relative",
+                transition:
+                  "background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s",
               }}
+              title="Carrito"
               onClick={() => {
                 setMostrarPerfil(false);
                 setMostrarCarrito(true);
               }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.transform = "scale(1.08)")
+              }
+              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
             >
-              <span
-                style={{
-                  fontSize: 25,
-                  filter:
-                    mostrarCarrito ? "drop-shadow(0 2px 6px #fff8)" : "none",
-                }}
-              >
+              <span style={{ filter: "drop-shadow(0 2px 6px #2196f366)" }}>
                 🛒
               </span>
-              Carrito
-              <span
-                style={{
-                  background: "#fff",
-                  color: "#2196f3",
-                  borderRadius: "1rem",
-                  padding: "0 0.7rem",
-                  marginLeft: 8,
-                  fontWeight: 700,
-                  fontSize: 15,
-                  boxShadow: "0 1px 6px #2196f322",
-                }}
-              >
-                {carrito.length}
-              </span>
+              {carrito.length > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 7,
+                    right: 7,
+                    background: "#fff",
+                    color: "#2196f3",
+                    borderRadius: "50%",
+                    padding: "0 7px",
+                    fontWeight: 700,
+                    fontSize: 13,
+                    boxShadow: "0 1px 6px #2196f322",
+                    minWidth: 20,
+                    textAlign: "center",
+                    lineHeight: "20px",
+                    border: "1.5px solid #2196f3",
+                  }}
+                >
+                  {carrito.length}
+                </span>
+              )}
+              {mostrarCarrito && (
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 6,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    fontSize: 10,
+                    color: "#1976d2",
+                    fontWeight: 700,
+                    letterSpacing: 1,
+                    opacity: 0.8,
+                  }}
+                >
+                  Carrito
+                </span>
+              )}
             </li>
             <li
               style={{
-                padding: "1.1rem 2rem",
-                cursor: "pointer",
-                borderRadius: "1.3rem",
-                margin: "0.5rem 1.2rem",
-                background:
-                  mostrarPerfil ? "rgba(255,255,255,0.16)" : "transparent",
-                transition: "background 0.2s, color 0.2s, box-shadow 0.2s",
-                color: mostrarPerfil ? "#fff" : "#e3f2fd",
-                boxShadow:
-                  mostrarPerfil ? "0 2px 16px #2196f366" : "none",
+                width: 54,
+                height: 54,
+                borderRadius: "50%",
+                background: mostrarPerfil ? "#fff4" : "transparent",
                 display: "flex",
                 alignItems: "center",
-                gap: 14,
-                fontSize: 18,
-                letterSpacing: 1,
+                justifyContent: "center",
+                cursor: "pointer",
+                fontSize: 27,
+                color: mostrarPerfil ? "#1976d2" : "#e3f2fd",
+                boxShadow: mostrarPerfil ? "0 2px 12px #2196f366" : "none",
                 border: "none",
+                transition:
+                  "background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s",
+                position: "relative",
               }}
-              onClick={() => {
-                setMostrarPerfil(true);
-                setMostrarCarrito(false);
-              }}
+              title="Perfil"
+              onClick={() => navigate("/perfil")}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.transform = "scale(1.08)")
+              }
+              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
             >
-              <span
-                style={{
-                  fontSize: 25,
-                  filter:
-                    mostrarPerfil ? "drop-shadow(0 2px 6px #fff8)" : "none",
-                }}
-              >
+              <span style={{ filter: "drop-shadow(0 2px 6px #2196f366)" }}>
                 👤
               </span>
-              Perfil
+              {mostrarPerfil && (
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 6,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    fontSize: 10,
+                    color: "#1976d2",
+                    fontWeight: 700,
+                    letterSpacing: 1,
+                    opacity: 0.8,
+                  }}
+                >
+                  Perfil
+                </span>
+              )}
             </li>
           </ul>
         </nav>
-        {/* Línea divisoria */}
-        <div
-          style={{
-            width: "80%",
-            height: 1,
-            background: "linear-gradient(90deg, #e3f2fd 0%, #2196f3 100%)",
-            margin: "2.2rem auto 1.2rem auto",
-            opacity: 0.25,
-            borderRadius: 2,
-          }}
-        />
-        {/* Footer */}
+        {/* Footer minimalista */}
         <div
           style={{
             marginTop: "auto",
             width: "100%",
             textAlign: "center",
             color: "#e3f2fd",
-            fontSize: 13,
-            opacity: 0.8,
-            padding: "1.2rem 0 0.2rem 0",
+            fontSize: 11,
+            opacity: 0.7,
+            padding: "0.7rem 0 0.2rem 0",
             letterSpacing: 1,
             fontWeight: 500,
           }}
         >
-          <span>© {new Date().getFullYear()} Tienda Azul</span>
-          <div style={{ fontSize: 11, marginTop: 2, opacity: 0.7 }}>
-            <span>Powered by React</span>
-          </div>
+          <span>© {new Date().getFullYear()}</span>
         </div>
+        <style>
+          {`
+        @keyframes spinLogo {
+          0% { transform: rotate(-6deg);}
+          100% { transform: rotate(6deg);}
+        }
+        `}
+        </style>
       </aside>
 
-      {/* Contenido principal desplazado a la derecha */}
+      {/* Contenido principal desplazado */}
       <main
         ref={mainRef}
         style={{
           flex: 1,
           padding: "1.2rem 2rem 2.5rem 2rem",
-          marginLeft: 240,
+          marginLeft: 80,
           width: "100%",
           minHeight: "100vh",
           boxSizing: "border-box",
@@ -484,94 +526,14 @@ function Principal2() {
 
         {/* Vista del carrito */}
         {mostrarCarrito && (
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: "1.5rem",
-              boxShadow: "0 4px 24px #2196f322",
-              padding: "2.5rem 2rem",
-              maxWidth: 650,
-              margin: "0 auto",
-              color: "#1565c0",
-              fontSize: 17,
-            }}
-          >
-            <h2 style={{ color: "#2196f3", marginBottom: 18 }}>
-              Carrito de Compras
-            </h2>
-            {carrito.length === 0 ? (
-              <div>Tu carrito está vacío.</div>
-            ) : (
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {carrito.map((prod, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      borderBottom: "1px solid #e3f2fd",
-                      padding: "0.7rem 0",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 16,
-                      }}
-                    >
-                      <img
-                        src={prod.imagen}
-                        alt={prod.nombre}
-                        style={{
-                          width: 54,
-                          height: 54,
-                          borderRadius: 10,
-                          objectFit: "cover",
-                        }}
-                      />
-                      <span style={{ fontWeight: 600 }}>{prod.nombre}</span>
-                      <span
-                        style={{
-                          color: "#ffd600",
-                          fontSize: 16,
-                        }}
-                      >
-                        {renderStars(prod.calificacion)}
-                      </span>
-                    </div>
-                    <div>
-                      <span
-                        style={{
-                          color: "#2196f3",
-                          fontWeight: "bold",
-                          marginRight: 18,
-                        }}
-                      >
-                        ${prod.precio.toFixed(2)}
-                      </span>
-                      <button
-                        className="home-usuario-btn-sec"
-                        style={{ padding: "0.3rem 1rem" }}
-                        onClick={() => quitarDelCarrito(i)}
-                      >
-                        Quitar
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {carrito.length > 0 && (
-              <div style={{ marginTop: 28, textAlign: "right" }}>
-                <b>Total: ${totalCarrito()}</b>
-                <button className="home-usuario-btn" style={{ marginLeft: 22 }}>
-                  Finalizar Compra
-                </button>
-              </div>
-            )}
-          </div>
+          <Carrito
+            carrito={carrito}
+            setCarrito={setCarrito}
+            onVaciar={handleVaciarCarrito}
+            onEliminar={handleEliminarProducto}
+            onCambiarCantidad={handleCambiarCantidad}
+            onCerrar={() => setMostrarCarrito(false)}
+          />
         )}
 
         {/* Vista de productos */}
