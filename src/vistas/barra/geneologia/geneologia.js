@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+ import React, { useEffect, useState } from 'react';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import './geneologia.css';

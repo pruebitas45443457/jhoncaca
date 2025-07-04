@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./home2.css";
-import Registro from "../registro";
-import Login from "../login";
+import Registro from "../auth/registro"; 
+import Login from "../auth/login"; // ✅ Usa el export correcto
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase"; // ✅ Usa el export correcto
 
@@ -67,7 +67,7 @@ function Home2() {
 					<a href="/comprar" className="home-usuario-btn">
 						Ir a Comprar
 					</a>
-					<a href="/perfil" className="home-usuario-btn-sec">
+					<a  className="home-usuario-btn-sec">
 						Mi Perfil
 					</a>
 				</div>
@@ -167,7 +167,7 @@ function Home2() {
 
 			{/* --- SECCIÓN AVANZADA DE BENEFICIOS Y REDES --- */}
 			<footer className="home-usuario-footer">
-				<div className="footer-beneficios">
+				<div className="footer-beneficios" id="beneficios">
 					<div className="beneficio-card">
 						<span className="beneficio-icon" style={{ background: "#e3f2fd" }}>🚚</span>
 						<h4>Envío Rápido</h4>
@@ -189,7 +189,7 @@ function Home2() {
 						<p>Atención personalizada por WhatsApp y correo.</p>
 					</div>
 				</div>
-				<div className="footer-social">
+				<div className="footer-social" id="contacto">
 					<span>Síguenos:</span>
 					<a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
 						<img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" />

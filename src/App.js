@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Registro from './vistas/registro';
-import Login from './vistas/login';
+import Registro from './vistas/auth/registro';
+import Login from './vistas/auth/login';
 import Primera from './vistas/primera';
 import Home2 from './vistas/usuario/home2';
 import Producto from './vistas/usuario/producto';
@@ -26,21 +27,30 @@ function Navbar({ user, onLogout, onShowLogin, onShowRegister }) {
         AMJ
       </span>
       <div className="navbar-links">
-        <a className="navbar-link" href="/">Inicio</a>
-        <a className="navbar-link" href="/usuario/home2">Panel</a>
-        <a className="navbar-link" href="#beneficios">Beneficios</a>
-        <a className="navbar-link" href="#testimonios">Testimonios</a>
-        <a className="navbar-link" href="#contacto">Contacto</a>
+        
         {user ? (
           <>
+            
+            <a className="navbar-link" href="#testimonios">Testimonios</a>
+            <a className="navbar-link" href="#contacto">Contacto</a>
+
             <span className="welcome advanced-welcome">👋 Hola, {user.username}</span>
             <button className="advanced-btn" onClick={onLogout}>Cerrar sesión</button>
           </>
         ) : (
+          <>
+           <a className="navbar-link" href="/">Inicio</a>
+            <a className="navbar-link" href="#beneficios">Beneficios</a>
+            <a className="navbar-link" href="#testimonios">Testimonios</a>
+            <a className="navbar-link" href="/usuario/home2">Panel</a>
+            <a className="navbar-link" href="#contacto">Contacto</a>
+            
+            
           <div className="navbar-auth">
             <button className="navbar-login-btn" onClick={onShowLogin}>Login</button>
             <button className="navbar-register-btn" onClick={onShowRegister}>Register</button>
           </div>
+        </>  
         )}
       </div>
     </nav>
@@ -55,12 +65,15 @@ function HomeContent({ user }) {
           <h1>
             Bienvenido a <span className="amj-minimal-gradient">AMJ</span>
           </h1>
-          <p>
+          <p
+          id='beneficios'
+          >
             Impulsa tu crecimiento personal y profesional.<br />
             Comunidad, herramientas y apoyo para alcanzar tus metas.
           </p>
           {!user && (
             <button
+            
               className="amj-minimal-btn"
               onClick={() => window.location.href = "/usuario/home2"}
             >
@@ -70,7 +83,7 @@ function HomeContent({ user }) {
         </div>
       </section>
 
-      <section className="amj-minimal-benefits">
+      <section className="amj-minimal-benefits" >
         <h2>¿Por qué elegir AMJ?</h2>
         <div className="amj-minimal-benefits-grid">
           <div>
@@ -97,9 +110,9 @@ function HomeContent({ user }) {
         </div>
       </section>
 
-      <section className="amj-minimal-comments">
+      <section className="amj-minimal-comments" >
         <h2>Testimonios</h2>
-        <div className="amj-minimal-comments-grid">
+        <div className="amj-minimal-comments-grid" >
           <div>
             <p>"AMJ me ayudó a crecer mi red y mis ingresos."</p>
             <span>- Laura G.</span>
@@ -108,9 +121,9 @@ function HomeContent({ user }) {
             <p>"El panel es intuitivo y el soporte responde."</p>
             <span>- Carlos M.</span>
           </div>
-          <div>
+          <div >
             <p>"Ahora tengo un equipo motivado y unido."</p>
-            <span>- Sofía R.</span>
+            <span id='testimonios'>- Sofía R.</span>
           </div>
         </div>
       </section>
@@ -142,8 +155,8 @@ function App() {
           <Navbar
             user={user}
             onLogout={handleLogout}
-            onShowLogin={() => { setShowLogin(true); setShowRegister(false); }}
-            onShowRegister={() => { setShowRegister(true); setShowLogin(false); }}
+            onShowLogin={() => { setShowLogin(true);setShowRegister(false) }}
+            onShowRegister={() => { setShowRegister(true); setShowLogin(false)  }}
           />
         </div>
         <Routes>
