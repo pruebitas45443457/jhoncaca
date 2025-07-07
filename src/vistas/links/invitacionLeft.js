@@ -4,10 +4,11 @@ import { useParams } from 'react-router-dom';
 function InvitadoL(){
 
     const { id } = useParams();
-
+    const lado = false;
   useEffect(() => {
     if (id) {
       localStorage.setItem('uid', id);
+      localStorage.setItem('lado', lado);
     }
   }, [id]);
     return (

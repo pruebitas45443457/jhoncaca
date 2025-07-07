@@ -22,15 +22,25 @@ function Genealogia() {
 
       // Busca invitados por campo "referidoPor" y "lado"
       const invitadosRef = collection(db, "users");
+      
+      console.log("UID del usuario autenticado:", user.uid);
+
       const q = query(invitadosRef, where("referidoPor", "==", user.uid));
       const querySnap = await getDocs(q);
 
+      console.log("Total referidos encontrados:", querySnap.size);
+
+
       const izq = [];
       const der = [];
-      querySnap.forEach(docu => {
+     querySnap.forEach(docu => {
         const d = docu.data();
-        if (d.lado === "izquierda") izq.push(d);
-        else if (d.lado === "derecha") der.push(d);
+        const lado = (d.lado || "").toLowerCase().trim(); // 🔧 normaliza
+
+        console.log("Usuario invitado:", d.username, "| Lado crudo:", d.lado, "| Lado normalizado:", lado, "| ReferidoPor:", d.referidoPor);
+
+        if (lado === "izquierda") izq.push(d);
+        else if (lado === "derecha") der.push(d);
       });
       setIzquierda(izq);
       setDerecha(der);

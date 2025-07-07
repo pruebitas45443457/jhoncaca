@@ -8,7 +8,7 @@ import Genealogia from './barra/geneologia/geneologia';
 import Comprar from './barra/comprar/comprar';
 import Ordenes from './barra/ordenes/ordenes'; // Agrega este import
 
-import Manual from './manual/manual';
+
 
 function Sidebar({ active, onSelect }) {
   return (
