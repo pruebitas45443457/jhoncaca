@@ -8,6 +8,8 @@ import Genealogia from './barra/geneologia/geneologia';
 import Comprar from './barra/comprar/comprar';
 import Ordenes from './barra/ordenes/ordenes'; // Agrega este import
 
+import Manual from './manual/manual';
+
 function Sidebar({ active, onSelect }) {
   return (
     <aside className="sidebar">
@@ -53,6 +55,10 @@ function Topbar({ username }) {
 
 function EnlacesPanel({ enlaces }) {
   const [copiado, setCopiado] = useState([false, false, false]);
+  const Manual = () => {
+    window.location.href = "/manual";
+
+  };
 
   const copiarEnlace = (idx) => {
     navigator.clipboard.writeText(enlaces[idx]);
@@ -91,14 +97,12 @@ function EnlacesPanel({ enlaces }) {
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center", marginTop: "2.5rem" }}>
-        <a
-          href="https://tumanual.com" // Cambia por tu enlace real
-          target="_blank"
-          rel="noopener noreferrer"
+       <button
+          onClick={Manual}
           className="manual-btn"
         >
           📖 Manual de uso
-        </a>
+        </button>
       </div>
     </div>
   );

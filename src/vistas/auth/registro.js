@@ -3,14 +3,27 @@ import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
-function generarEnlace(username) {
-  // Puedes hacerlos más únicos agregando Math.random() o Date.now()
-  const base = username.toLowerCase();
+function generarEnlace(uid) {
+  const base = uid.toLowerCase();
+   const host = window.location.origin; // toma http://localhost:3000 o https://miapp.com
+    return [
+      //geneologia Derecha
+      `${host}/invitadoR/${base}`,
+
+      //geneologia Izquierda
+      `${host}/invitadoL/${base}`,
+
+      //link de tienda-> shop
+      `${host}/L_Shop/${base}`
+    ];
+    /*
+   Puedes hacerlos más únicos agregando Math.random() o Date.now(), no se cunatos links quieres generar, ni si nececitas los mismos
+   metodos por alguna razon, pero si quieres generar varios enlaces únicos, puedes hacer algo así:
   return [
-    `https://miapp.com/invite/${base}-${Math.random().toString(36).substring(2, 8)}`,
-    `https://miapp.com/invite/${base}-${Math.random().toString(36).substring(2, 8)}`,
-    `https://miapp.com/invite/${base}-${Math.random().toString(36).substring(2, 8)}`
-  ];
+    `https://miapp.com/invitado/${base}-${Math.random().toString(36).substring(2, 8)`,
+    `https://miapp.com/invitado/{base}`,
+    `https://miapp.com/invitado/${base}`
+  ];*/
 }
 
 function Registro({ onRegister, onCancel }) {
@@ -30,7 +43,10 @@ function Registro({ onRegister, onCancel }) {
       await updateProfile(userCredential.user, { displayName: username });
 
       // Generar enlaces únicos
-      const enlaces = generarEnlace(username);
+      const uid = userCredential.user.uid;
+      const enlaces = generarEnlace(uid);
+      
+
 
       // Guardar en Firestore
       await setDoc(doc(db, "users", userCredential.user.uid), {
