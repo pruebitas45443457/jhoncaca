@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './login.css'; // Asegúrate de tener el CSS adecuado
 import { auth, db } from '../../firebase';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -59,8 +60,8 @@ function Login({ onLogin, onCancel }) {
         onChange={e => setPassword(e.target.value)}
         required
       />
-      {error && <div style={{ color: "#ff5252", marginBottom: 10 }}>{error}</div>}
-      <button type="submit" className="advanced-btn" disabled={loading}>
+      {error && <div className="error-message">{error}</div>}
+      <button type="submit" className={`advanced-btn ${loading ? 'loading' : ''}`} disabled={loading}>
         {loading ? "Ingresando..." : "Entrar"}
       </button>
       <button type="button" className="advanced-btn secondary" onClick={onCancel} disabled={loading}>

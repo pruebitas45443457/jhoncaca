@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './login.css';
 import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -108,8 +109,8 @@ function Registro({ onRegister, onCancel }) {
         onChange={e => setPassword(e.target.value)}
         required
       />
-      {error && <div style={{ color: "#ff5252", marginBottom: 10 }}>{error}</div>}
-      <button type="submit" className="advanced-btn" disabled={loading}>
+      {error && <div className="error-message">{error}</div>}
+      <button type="submit" className={`advanced-btn ${loading ? 'loading' : ''}`} disabled={loading}>
         {loading ? "Registrando..." : "Registrarse"}
       </button>
       <button type="button" className="advanced-btn secondary" onClick={onCancel} disabled={loading}>
