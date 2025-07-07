@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 function generarEnlace(uid) {
-  const base = uid.toLowerCase();
+  const base = uid;
    const host = window.location.origin; // toma http://localhost:3000 o https://miapp.com
     return [
       //geneologia Derecha
@@ -25,6 +25,25 @@ function generarEnlace(uid) {
     `https://miapp.com/invitado/${base}`
   ];*/
 }
+const referidoPor = localStorage.getItem("uid") || null;
+
+const Viewlado = () => {
+  const Bool = localStorage.getItem("lado"); // obtiene un string o null
+  let lado = "";
+
+  if (Bool === "false") {
+    lado = "izquierda";
+  } else if (Bool === "true") {
+    lado = "derecha";
+  } else {
+    lado = null;
+  }
+
+  return lado || null;
+};
+
+const lado = Viewlado(); // Llama a la función para obtener el lado del usuario
+
 
 function Registro({ onRegister, onCancel }) {
   const [username, setUsername] = useState('');
@@ -53,7 +72,9 @@ function Registro({ onRegister, onCancel }) {
         username,
         email,
         enlaces,
-        referencia
+        referencia,
+        referidoPor,
+        lado, // Guardar el lado del usuario
       });
 
       onRegister({ username, email });
@@ -62,7 +83,8 @@ function Registro({ onRegister, onCancel }) {
     }
     setLoading(false);
   };
-
+  localStorage.removeItem("uid");
+  localStorage.removeItem("lado");
   return (
     <form className="form advanced-form" onSubmit={handleSubmit}>
       <h2>Registro</h2>

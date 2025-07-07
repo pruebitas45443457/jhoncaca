@@ -28,7 +28,7 @@ function Login({ onLogin, onCancel }) {
       }
 
       const data = userDoc.data();
-      console.log("Referencia:", data.referencia, typeof data.referencia);
+      
 
       // Verifica el campo referencia
       if (data.referencia === 1) {
