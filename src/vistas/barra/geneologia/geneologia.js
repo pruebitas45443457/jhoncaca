@@ -25,10 +25,14 @@ function Genealogia() {
       
       console.log("UID del usuario autenticado:", user.uid);
 
-      const q = query(invitadosRef, where("referidoPor", "==", user.uid));
-      const querySnap = await getDocs(q);
+      const q = query(invitadosRef); // sin where
+const querySnap = await getDocs(q);
 
-      console.log("Total referidos encontrados:", querySnap.size);
+querySnap.forEach(docu => {
+  const d = docu.data();
+  console.log("Usuario:", d.username, "| referidoPor:", d.referidoPor);
+});
+
 
 
       const izq = [];
@@ -45,7 +49,10 @@ function Genealogia() {
       setIzquierda(izq);
       setDerecha(der);
     };
+    
     fetchGenealogia();
+
+    
   }, []);
 
   return (
