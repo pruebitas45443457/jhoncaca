@@ -1,49 +1,193 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./home2.css";
+import "./principal2.css";
 import Carrito from "./carro/carrito";
 
+// Productos variados del mercado actual
 const productos = [
+  // Ropa
   {
-    nombre: "Suplemento Premium",
-    descripcion: "Mejora tu energía y bienestar con ingredientes naturales.",
-    precio: 29.99,
-    imagen:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+    id: 1,
+    nombre: "Camiseta Premium",
+    descripcion: "Camiseta de algodón 100% orgánico, cómoda y duradera.",
+    precio: 25.99,
+    imagen: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80",
+    categoria: "ropa",
+    calificacion: 4.5,
+    stock: 15,
+    envioGratis: true,
+  },
+  {
+    id: 2,
+    nombre: "Jeans Clásicos",
+    descripcion: "Jeans de corte clásico, perfectos para cualquier ocasión.",
+    precio: 45.99,
+    imagen: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=600&q=80",
+    categoria: "ropa",
     calificacion: 4.7,
+    stock: 8,
+    envioGratis: true,
+  },
+  {
+    id: 3,
+    nombre: "Zapatillas Deportivas",
+    descripcion: "Zapatillas cómodas para running y actividades deportivas.",
+    precio: 89.99,
+    imagen: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    categoria: "ropa",
+    calificacion: 4.8,
+    stock: 12,
+    envioGratis: true,
+  },
+  
+  // Comida
+  {
+    id: 4,
+    nombre: "Café Premium",
+    descripcion: "Café de origen único, tostado artesanalmente.",
+    precio: 18.99,
+    imagen: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=600&q=80",
+    categoria: "comida",
+    calificacion: 4.9,
+    stock: 25,
+    envioGratis: false,
+  },
+  {
+    id: 5,
+    nombre: "Miel Orgánica",
+    descripcion: "Miel pura de abeja, 100% natural y orgánica.",
+    precio: 12.99,
+    imagen: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=600&q=80",
+    categoria: "comida",
+    calificacion: 4.6,
+    stock: 18,
+    envioGratis: false,
+  },
+  {
+    id: 6,
+    nombre: "Aceite de Oliva Extra",
+    descripcion: "Aceite de oliva virgen extra, primera prensada en frío.",
+    precio: 22.99,
+    imagen: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=600&q=80",
+    categoria: "comida",
+    calificacion: 4.7,
+    stock: 10,
+    envioGratis: true,
+  },
+
+  // Belleza
+  {
+    id: 7,
+    nombre: "Crema Facial Hidratante",
+    descripcion: "Crema facial con ácido hialurónico y vitamina E.",
+    precio: 35.99,
+    imagen: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80",
+    categoria: "belleza",
+    calificacion: 4.4,
+    stock: 20,
+    envioGratis: true,
+  },
+  {
+    id: 8,
+    nombre: "Sérum Anti-edad",
+    descripcion: "Sérum con retinol y colágeno para piel joven.",
+    precio: 49.99,
+    imagen: "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?auto=format&fit=crop&w=600&q=80",
+    categoria: "belleza",
+    calificacion: 4.8,
+    stock: 7,
+    envioGratis: true,
+  },
+  {
+    id: 9,
+    nombre: "Mascarilla Facial",
+    descripcion: "Mascarilla purificante con carbón activado.",
+    precio: 15.99,
+    imagen: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&w=600&q=80",
+    categoria: "belleza",
+    calificacion: 4.3,
+    stock: 30,
+    envioGratis: false,
+  },
+
+  // Remedios/Salud
+  {
+    id: 10,
+    nombre: "Vitamina C 1000mg",
+    descripcion: "Suplemento de vitamina C para fortalecer el sistema inmune.",
+    precio: 16.99,
+    imagen: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
+    categoria: "salud",
+    calificacion: 4.6,
+    stock: 40,
+    envioGratis: false,
+  },
+  {
+    id: 11,
+    nombre: "Omega 3",
+    descripcion: "Cápsulas de omega 3 para la salud cardiovascular.",
+    precio: 24.99,
+    imagen: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=600&q=80",
+    categoria: "salud",
+    calificacion: 4.7,
+    stock: 22,
+    envioGratis: true,
+  },
+  {
+    id: 12,
+    nombre: "Probióticos",
+    descripcion: "Suplemento probiótico para la salud digestiva.",
+    precio: 32.99,
+    imagen: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=600&q=80",
+    categoria: "salud",
+    calificacion: 4.5,
+    stock: 15,
+    envioGratis: true,
+  },
+
+  // Tecnología
+  {
+    id: 13,
+    nombre: "Auriculares Bluetooth",
+    descripcion: "Auriculares inalámbricos con cancelación de ruido.",
+    precio: 79.99,
+    imagen: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+    categoria: "tecnologia",
+    calificacion: 4.6,
     stock: 12,
     envioGratis: true,
   },
   {
-    nombre: "Proteína Vegana",
-    descripcion: "Ideal para recuperación muscular y dietas saludables.",
-    precio: 39.99,
-    imagen:
-      "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=600&q=80",
-    calificacion: 4.5,
-    stock: 5,
+    id: 14,
+    nombre: "Cargador Inalámbrico",
+    descripcion: "Base de carga inalámbrica rápida para smartphones.",
+    precio: 29.99,
+    imagen: "https://images.unsplash.com/photo-1609592806955-d3b6c3b5e4b5?auto=format&fit=crop&w=600&q=80",
+    categoria: "tecnologia",
+    calificacion: 4.4,
+    stock: 18,
     envioGratis: false,
   },
   {
-    nombre: "Vitaminas Complejas",
-    descripcion: "Refuerza tu sistema inmune con vitaminas esenciales.",
-    precio: 19.99,
-    imagen:
-      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+    id: 15,
+    nombre: "Smartwatch",
+    descripcion: "Reloj inteligente con monitor de salud y GPS.",
+    precio: 199.99,
+    imagen: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+    categoria: "tecnologia",
     calificacion: 4.8,
-    stock: 0,
+    stock: 5,
     envioGratis: true,
   },
-  {
-    nombre: "Bebida Detox",
-    descripcion: "Limpia tu organismo y siente la diferencia.",
-    precio: 24.99,
-    imagen:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
-    calificacion: 4.3,
-    stock: 8,
-    envioGratis: false,
-  },
+];
+
+const categorias = [
+  { id: "todas", nombre: "Todas", icono: "🛍️" },
+  { id: "ropa", nombre: "Ropa", icono: "👕" },
+  { id: "comida", nombre: "Comida", icono: "🍯" },
+  { id: "belleza", nombre: "Belleza", icono: "💄" },
+  { id: "salud", nombre: "Salud", icono: "💊" },
+  { id: "tecnologia", nombre: "Tecnología", icono: "📱" },
 ];
 
 function renderStars(rating) {
@@ -54,7 +198,7 @@ function renderStars(rating) {
         key={i}
         style={{
           color: i <= Math.round(rating) ? "#ffd600" : "#e0e0e0",
-          fontSize: 18,
+          fontSize: 16,
         }}
       >
         ★
@@ -66,43 +210,43 @@ function renderStars(rating) {
 
 function Principal2() {
   const [busqueda, setBusqueda] = useState("");
+  const [categoriaActiva, setCategoriaActiva] = useState("todas");
   const [carrito, setCarrito] = useState(() => {
-    // Recupera el carrito del localStorage al cargar
     const guardado = localStorage.getItem("carrito");
     return guardado ? JSON.parse(guardado) : [];
   });
   const [mostrarCarrito, setMostrarCarrito] = useState(false);
   const [mostrarPerfil, setMostrarPerfil] = useState(false);
-  const mainRef = useRef(null);
+  const [ordenes, setOrdenes] = useState(() => {
+    const ordenesGuardadas = localStorage.getItem("ordenes");
+    return ordenesGuardadas ? JSON.parse(ordenesGuardadas) : [];
+  });
+  
   const navigate = useNavigate();
 
-  // Guarda el carrito en localStorage cada vez que cambia
+  // Guardar carrito y órdenes en localStorage
   useEffect(() => {
     localStorage.setItem("carrito", JSON.stringify(carrito));
   }, [carrito]);
 
-  // Scroll al top al cambiar de vista principal
   useEffect(() => {
-    if (mainRef.current) {
-      mainRef.current.scrollTo
-        ? mainRef.current.scrollTo(0, 0)
-        : window.scrollTo(0, 0);
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, [mostrarCarrito, mostrarPerfil]);
+    localStorage.setItem("ordenes", JSON.stringify(ordenes));
+  }, [ordenes]);
 
-  const productosFiltrados = productos.filter((p) =>
-    p.nombre.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  // Filtrar productos
+  const productosFiltrados = productos.filter((p) => {
+    const coincideBusqueda = p.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+                            p.descripcion.toLowerCase().includes(busqueda.toLowerCase());
+    const coincideCategoria = categoriaActiva === "todas" || p.categoria === categoriaActiva;
+    return coincideBusqueda && coincideCategoria;
+  });
 
   function agregarAlCarrito(producto) {
-    // Si ya existe, suma cantidad
     setCarrito((prev) => {
-      const existe = prev.find((p) => p.nombre === producto.nombre);
+      const existe = prev.find((p) => p.id === producto.id);
       if (existe) {
         return prev.map((p) =>
-          p.nombre === producto.nombre
+          p.id === producto.id
             ? { ...p, cantidad: (p.cantidad || 1) + 1 }
             : p
         );
@@ -111,8 +255,20 @@ function Principal2() {
     });
   }
 
-  function quitarDelCarrito(index) {
-    setCarrito((prev) => prev.filter((_, i) => i !== index));
+  function quitarDelCarrito(id) {
+    setCarrito((prev) => prev.filter((p) => p.id !== id));
+  }
+
+  function vaciarCarrito() {
+    setCarrito([]);
+  }
+
+  function cambiarCantidad(id, cantidad) {
+    setCarrito((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, cantidad: Math.max(1, cantidad) } : p
+      )
+    );
   }
 
   function totalCarrito() {
@@ -122,579 +278,215 @@ function Principal2() {
     ).toFixed(2);
   }
 
-  // Para pasar props y lógica avanzada al Carrito.js
-  function handleVaciarCarrito() {
+  function procesarCompra(datosCompra) {
+    const nuevaOrden = {
+      id: Date.now(),
+      fecha: new Date().toLocaleDateString(),
+      productos: [...carrito],
+      total: totalCarrito(),
+      estado: "Procesando",
+      datosEnvio: datosCompra
+    };
+    
+    setOrdenes(prev => [nuevaOrden, ...prev]);
     setCarrito([]);
-  }
-  function handleEliminarProducto(id) {
-    setCarrito(carrito.filter((prod) => prod.nombre !== id));
-  }
-  function handleCambiarCantidad(id, cantidad) {
-    setCarrito(
-      carrito.map((prod) =>
-        prod.nombre === id
-          ? { ...prod, cantidad: Math.max(1, cantidad) }
-          : prod
-      )
-    );
+    setMostrarCarrito(false);
+    
+    // Mostrar confirmación
+    alert("¡Compra realizada con éxito! Puedes ver tu orden en el historial.");
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        background: "linear-gradient(120deg, #e3f2fd 60%, #fff 100%)",
-        width: "100vw",
-        overflowX: "hidden",
-      }}
-    >
-      {/* Barra lateral minimalista avanzada */}
-      <aside
-        style={{
-          width: 80,
-          background: "rgba(25, 118, 210, 0.98)",
-          color: "#fff",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "1.5rem 0 1.5rem 0",
-          borderRadius: "0 2.2rem 2.2rem 0",
-          boxShadow: "8px 0 32px #1976d244",
-          minHeight: "100vh",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          zIndex: 30,
-          borderRight: "2.5px solid #e3f2fd",
-          transition: "box-shadow 0.3s",
-          gap: 22,
-          backdropFilter: "blur(2px)",
-        }}
-      >
-        {/* Logo animado */}
-        <div
-          style={{
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, #fff 60%, #e3f2fd 100%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 18,
-            boxShadow: "0 2px 16px #2196f344",
-            border: "2px solid #2196f3",
-            animation: "spinLogo 2.5s linear infinite alternate",
-          }}
+    <div className="principal2-container">
+      {/* Header con botón de regreso */}
+      <header className="principal2-header">
+        <button 
+          className="back-btn"
+          onClick={() => navigate('/')}
         >
-          <span style={{ fontSize: 32, color: "#1976d2", fontWeight: 900 }}>
-            🛍️
-          </span>
-        </div>
-        {/* Navegación minimalista avanzada */}
-        <nav style={{ width: "100%" }}>
-          <ul
-            style={{
-              listStyle: "none",
-              padding: 0,
-              margin: 0,
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              gap: 18,
-              alignItems: "center",
-            }}
+          ← Volver al Dashboard
+        </button>
+        
+        <div className="header-actions">
+          <button 
+            className="header-btn"
+            onClick={() => setMostrarPerfil(!mostrarPerfil)}
           >
-            <li
-              style={{
-                width: 54,
-                height: 54,
-                borderRadius: "50%",
-                background:
-                  !mostrarPerfil && !mostrarCarrito ? "#fff4" : "transparent",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                fontSize: 27,
-                color: !mostrarPerfil && !mostrarCarrito ? "#1976d2" : "#e3f2fd",
-                boxShadow:
-                  !mostrarPerfil && !mostrarCarrito ? "0 2px 12px #2196f366" : "none",
-                border: "none",
-                transition:
-                  "background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s",
-                position: "relative",
-              }}
-              title="Productos"
-              onClick={() => {
-                setMostrarPerfil(false);
-                setMostrarCarrito(false);
-              }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.transform = "scale(1.08)")
-              }
-              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            >
-              <span style={{ filter: "drop-shadow(0 2px 6px #2196f366)" }}>
-                🏠
-              </span>
-              {!mostrarPerfil && !mostrarCarrito && (
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: 6,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    fontSize: 10,
-                    color: "#1976d2",
-                    fontWeight: 700,
-                    letterSpacing: 1,
-                    opacity: 0.8,
-                  }}
-                >
-                  Home
-                </span>
-              )}
-            </li>
-            <li
-              style={{
-                width: 54,
-                height: 54,
-                borderRadius: "50%",
-                background: mostrarCarrito ? "#fff4" : "transparent",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                fontSize: 27,
-                color: mostrarCarrito ? "#1976d2" : "#e3f2fd",
-                boxShadow: mostrarCarrito ? "0 2px 12px #2196f366" : "none",
-                border: "none",
-                position: "relative",
-                transition:
-                  "background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s",
-              }}
-              title="Carrito"
-              onClick={() => {
-                setMostrarPerfil(false);
-                setMostrarCarrito(true);
-              }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.transform = "scale(1.08)")
-              }
-              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            >
-              <span style={{ filter: "drop-shadow(0 2px 6px #2196f366)" }}>
-                🛒
-              </span>
-              {carrito.length > 0 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: 7,
-                    right: 7,
-                    background: "#fff",
-                    color: "#2196f3",
-                    borderRadius: "50%",
-                    padding: "0 7px",
-                    fontWeight: 700,
-                    fontSize: 13,
-                    boxShadow: "0 1px 6px #2196f322",
-                    minWidth: 20,
-                    textAlign: "center",
-                    lineHeight: "20px",
-                    border: "1.5px solid #2196f3",
-                  }}
-                >
-                  {carrito.length}
-                </span>
-              )}
-              {mostrarCarrito && (
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: 6,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    fontSize: 10,
-                    color: "#1976d2",
-                    fontWeight: 700,
-                    letterSpacing: 1,
-                    opacity: 0.8,
-                  }}
-                >
-                  Carrito
-                </span>
-              )}
-            </li>
-            <li
-              style={{
-                width: 54,
-                height: 54,
-                borderRadius: "50%",
-                background: mostrarPerfil ? "#fff4" : "transparent",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                fontSize: 27,
-                color: mostrarPerfil ? "#1976d2" : "#e3f2fd",
-                boxShadow: mostrarPerfil ? "0 2px 12px #2196f366" : "none",
-                border: "none",
-                transition:
-                  "background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s",
-                position: "relative",
-              }}
-              title="Perfil"
-              onClick={() => navigate("/perfil")}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.transform = "scale(1.08)")
-              }
-              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            >
-              <span style={{ filter: "drop-shadow(0 2px 6px #2196f366)" }}>
-                👤
-              </span>
-              {mostrarPerfil && (
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: 6,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    fontSize: 10,
-                    color: "#1976d2",
-                    fontWeight: 700,
-                    letterSpacing: 1,
-                    opacity: 0.8,
-                  }}
-                >
-                  Perfil
-                </span>
-              )}
-            </li>
-          </ul>
-        </nav>
-        {/* Footer minimalista */}
-        <div
-          style={{
-            marginTop: "auto",
-            width: "100%",
-            textAlign: "center",
-            color: "#e3f2fd",
-            fontSize: 11,
-            opacity: 0.7,
-            padding: "0.7rem 0 0.2rem 0",
-            letterSpacing: 1,
-            fontWeight: 500,
-          }}
-        >
-          <span>© {new Date().getFullYear()}</span>
+            👤 Perfil
+          </button>
+          <button 
+            className="header-btn carrito-btn"
+            onClick={() => setMostrarCarrito(!mostrarCarrito)}
+          >
+            🛒 Carrito ({carrito.length})
+          </button>
         </div>
-        <style>
-          {`
-        @keyframes spinLogo {
-          0% { transform: rotate(-6deg);}
-          100% { transform: rotate(6deg);}
-        }
-        `}
-        </style>
-      </aside>
+      </header>
 
-      {/* Contenido principal desplazado */}
-      <main
-        ref={mainRef}
-        style={{
-          flex: 1,
-          padding: "1.2rem 2rem 2.5rem 2rem",
-          marginLeft: 80,
-          width: "100%",
-          minHeight: "100vh",
-          boxSizing: "border-box",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-        }}
-      >
-        {/* Barra de búsqueda y usuario */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 24,
-          }}
-        >
-          <div
-            className="productos-searchbar"
-            style={{
-              maxWidth: 420,
-              width: "100%",
-              background: "#fff",
-              borderRadius: "2rem",
-              boxShadow: "0 2px 12px #2196f322",
-              border: "1.5px solid #e3f2fd",
-              padding: "0.5rem 1.2rem",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <input
-              type="text"
-              placeholder="Buscar productos..."
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-              style={{
-                flex: 1,
-                border: "none",
-                background: "transparent",
-                fontSize: "1.15rem",
-                color: "#1565c0",
-                outline: "none",
-                padding: "0.5rem 0.7rem",
-              }}
+      <div className="principal2-content">
+        {/* Sidebar de categorías */}
+        <aside className="categories-sidebar">
+          <h3>Categorías</h3>
+          {categorias.map(cat => (
+            <button
+              key={cat.id}
+              className={`category-btn ${categoriaActiva === cat.id ? 'active' : ''}`}
+              onClick={() => setCategoriaActiva(cat.id)}
+            >
+              <span className="category-icon">{cat.icono}</span>
+              {cat.nombre}
+            </button>
+          ))}
+        </aside>
+
+        {/* Contenido principal */}
+        <main className="main-content">
+          {/* Barra de búsqueda */}
+          <div className="search-section">
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Buscar productos..."
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+              <span className="search-icon">🔍</span>
+            </div>
+          </div>
+
+          {/* Vista del carrito */}
+          {mostrarCarrito && (
+            <Carrito
+              carrito={carrito}
+              setCarrito={setCarrito}
+              onVaciar={vaciarCarrito}
+              onEliminar={quitarDelCarrito}
+              onCambiarCantidad={cambiarCantidad}
+              onCerrar={() => setMostrarCarrito(false)}
+              onProcesarCompra={procesarCompra}
+              ordenes={ordenes}
             />
-            <span
-              className="search-icon"
-              style={{
-                color: "#2196f3",
-                fontSize: "1.4rem",
-                marginLeft: 8,
-              }}
-            >
-              🔍
-            </span>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 18,
-            }}
-          >
-            <button
-              className="home-usuario-btn-sec"
-              style={{ padding: "0.7rem 1.5rem" }}
-              onClick={() => setMostrarPerfil(true)}
-            >
-              👤 Mi Perfil
-            </button>
-            <button
-              className="home-usuario-btn"
-              style={{ padding: "0.7rem 1.5rem" }}
-              onClick={() => setMostrarCarrito(true)}
-            >
-              🛒 Carrito ({carrito.length})
-            </button>
-          </div>
-        </div>
+          )}
 
-        {/* Vista de perfil */}
-        {mostrarPerfil && (
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: "1.5rem",
-              boxShadow: "0 4px 24px #2196f322",
-              padding: "2.5rem 2rem",
-              maxWidth: 520,
-              margin: "0 auto",
-              color: "#1565c0",
-              fontSize: 18,
-            }}
-          >
-            <h2 style={{ color: "#2196f3", marginBottom: 18 }}>Mi Perfil</h2>
-            <div style={{ marginBottom: 10 }}>
-              👤 <b>usuario_demo</b>
-            </div>
-            <div style={{ marginBottom: 10 }}>
-              ✉️ <b>usuario@demo.com</b>
-            </div>
-            <div style={{ marginTop: 28 }}>
-              <button
-                className="home-usuario-btn-sec"
-                style={{ marginRight: 12 }}
-              >
-                Editar Perfil
-              </button>
-              <button className="home-usuario-btn">Cerrar Sesión</button>
-            </div>
-          </div>
-        )}
-
-        {/* Vista del carrito */}
-        {mostrarCarrito && (
-          <Carrito
-            carrito={carrito}
-            setCarrito={setCarrito}
-            onVaciar={handleVaciarCarrito}
-            onEliminar={handleEliminarProducto}
-            onCambiarCantidad={handleCambiarCantidad}
-            onCerrar={() => setMostrarCarrito(false)}
-          />
-        )}
-
-        {/* Vista de productos */}
-        {!mostrarPerfil && !mostrarCarrito && (
-          <>
-            <div
-              className="productos-titulo"
-              style={{ marginTop: 0, marginBottom: 18 }}
-            >
-              <h2
-                style={{
-                  color: "#1976d2",
-                  fontWeight: 900,
-                  fontSize: "2rem",
-                }}
-              >
-                Productos Destacados
-              </h2>
-            </div>
-            <div className="productos-grid" style={{ gap: 32 }}>
-              {productosFiltrados.length === 0 && (
-                <div
-                  style={{
-                    color: "#bdbdbd",
-                    fontSize: 20,
-                    marginTop: 40,
-                  }}
-                >
-                  No se encontraron productos.
+          {/* Vista del perfil */}
+          {mostrarPerfil && (
+            <div className="perfil-section">
+              <h2>Mi Perfil</h2>
+              <div className="perfil-info">
+                <div className="perfil-item">
+                  <span className="perfil-label">👤 Usuario:</span>
+                  <span>usuario_demo</span>
                 </div>
-              )}
-              {productosFiltrados.map((prod, i) => (
-                <div
-                  className="producto-card"
-                  key={i}
-                  style={{
-                    cursor: "pointer",
-                    background: "#fff",
-                    borderRadius: "1.5rem",
-                    boxShadow: "0 2px 16px #2196f322",
-                    padding: "1.2rem 1rem",
-                    minWidth: 260,
-                    maxWidth: 320,
-                    transition:
-                      "box-shadow 0.2s, transform 0.2s",
-                    border: "1.5px solid #e3f2fd",
-                    position: "relative",
-                  }}
-                  onClick={() =>
-                    navigate(`/producto/${encodeURIComponent(prod.nombre)}`, {
-                      state: { producto: prod,
-                      },
-                    })
-                  }
-                >
-                  <div
-                    className="producto-img"
-                    style={{
-                      backgroundImage: `url(${prod.imagen})`,
-                      height: 170,
-                      borderRadius: "1.2rem",
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      marginBottom: 16,
-                      boxShadow: "0 2px 12px #2196f322",
-                    }}
-                  />
-                  <div className="producto-info" style={{ minHeight: 120 }}>
-                    <div
-                      className="producto-nombre"
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 19,
-                        color: "#1976d2",
-                      }}
-                    >
-                      {prod.nombre}
-                    </div>
-                    <div
-                      className="producto-desc"
-                      style={{
-                        color: "#1565c0",
-                        fontSize: 15,
-                        margin: "6px 0 10px 0",
-                      }}
-                    >
-                      {prod.descripcion}
-                    </div>
-                    <div
-                      className="producto-precio"
-                      style={{
-                        fontWeight: 800,
-                        fontSize: 18,
-                        color: "#0d47a1",
-                      }}
-                    >
-                      ${prod.precio.toFixed(2)}
-                    </div>
-                    <div
-                      style={{
-                        margin: "6px 0 10px 0",
-                        color: "#ffd600",
-                        fontSize: 16,
-                      }}
-                    >
-                      {renderStars(prod.calificacion)}
-                    </div>
-                    <div style={{ marginBottom: 8 }}>
-                      {prod.envioGratis && (
-                        <span
-                          style={{
-                            background: "#e8f5e9",
-                            color: "#43a047",
-                            borderRadius: "1rem",
-                            padding: "0.2rem 0.8rem",
-                            fontWeight: 600,
-                            fontSize: 13,
-                            marginRight: 6,
-                          }}
-                        >
-                          🚚 Envío gratis
-                        </span>
-                      )}
-                      <span
-                        style={{
-                          color: prod.stock > 0 ? "#43a047" : "#e53935",
-                          fontWeight: 700,
-                          fontSize: 13,
-                        }}
-                      >
-                        {prod.stock > 0
-                          ? `${prod.stock} disponibles`
-                          : "Sin stock"}
-                      </span>
-                    </div>
-                    <button
-                      className="producto-btn"
-                      style={{
-                        width: "100%",
-                        marginTop: 6,
-                        background:
-                          prod.stock > 0
-                            ? "linear-gradient(90deg, #2196f3 60%, #0d47a1 100%)"
-                            : "#bdbdbd",
-                        cursor: prod.stock > 0 ? "pointer" : "not-allowed",
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        agregarAlCarrito(prod);
-                      }}
-                      disabled={prod.stock === 0}
-                    >
-                      {prod.stock === 0 ? "Sin stock" : "Añadir al carrito"}
-                    </button>
+                <div className="perfil-item">
+                  <span className="perfil-label">✉️ Email:</span>
+                  <span>usuario@demo.com</span>
+                </div>
+                <div className="perfil-item">
+                  <span className="perfil-label">📦 Órdenes totales:</span>
+                  <span>{ordenes.length}</span>
+                </div>
+              </div>
+              
+              {/* Historial de órdenes */}
+              <div className="ordenes-historial">
+                <h3>Historial de Órdenes</h3>
+                {ordenes.length === 0 ? (
+                  <p>No tienes órdenes aún.</p>
+                ) : (
+                  <div className="ordenes-lista">
+                    {ordenes.map(orden => (
+                      <div key={orden.id} className="orden-card">
+                        <div className="orden-header">
+                          <span className="orden-id">Orden #{orden.id}</span>
+                          <span className="orden-fecha">{orden.fecha}</span>
+                        </div>
+                        <div className="orden-productos">
+                          {orden.productos.map(prod => (
+                            <div key={prod.id} className="orden-producto">
+                              {prod.nombre} x{prod.cantidad}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="orden-footer">
+                          <span className="orden-total">Total: ${orden.total}</span>
+                          <span className={`orden-estado ${orden.estado.toLowerCase()}`}>
+                            {orden.estado}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              ))}
+                )}
+              </div>
             </div>
-          </>
-        )}
-      </main>
+          )}
+
+          {/* Vista de productos */}
+          {!mostrarCarrito && !mostrarPerfil && (
+            <>
+              <div className="productos-header">
+                <h2>
+                  {categoriaActiva === "todas" 
+                    ? "Todos los Productos" 
+                    : categorias.find(c => c.id === categoriaActiva)?.nombre
+                  }
+                </h2>
+                <span className="productos-count">
+                  {productosFiltrados.length} productos encontrados
+                </span>
+              </div>
+
+              <div className="productos-grid">
+                {productosFiltrados.length === 0 ? (
+                  <div className="no-productos">
+                    <p>No se encontraron productos.</p>
+                  </div>
+                ) : (
+                  productosFiltrados.map((producto) => (
+                    <div key={producto.id} className="producto-card">
+                      <div 
+                        className="producto-imagen"
+                        style={{ backgroundImage: `url(${producto.imagen})` }}
+                      />
+                      
+                      <div className="producto-info">
+                        <h3 className="producto-nombre">{producto.nombre}</h3>
+                        <p className="producto-descripcion">{producto.descripcion}</p>
+                        
+                        <div className="producto-rating">
+                          {renderStars(producto.calificacion)}
+                          <span className="rating-text">({producto.calificacion})</span>
+                        </div>
+                        
+                        <div className="producto-precio">
+                          ${producto.precio.toFixed(2)}
+                        </div>
+                        
+                        <div className="producto-badges">
+                          {producto.envioGratis && (
+                            <span className="badge envio-gratis">🚚 Envío gratis</span>
+                          )}
+                          <span className={`badge stock ${producto.stock > 0 ? 'disponible' : 'agotado'}`}>
+                            {producto.stock > 0 ? `${producto.stock} disponibles` : "Sin stock"}
+                          </span>
+                        </div>
+                        
+                        <button
+                          className={`producto-btn ${producto.stock === 0 ? 'disabled' : ''}`}
+                          onClick={() => agregarAlCarrito(producto)}
+                          disabled={producto.stock === 0}
+                        >
+                          {producto.stock === 0 ? "Sin stock" : "Añadir al carrito"}
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

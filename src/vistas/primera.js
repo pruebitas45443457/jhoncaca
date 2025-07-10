@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './primera.css';
 import { auth, db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import Perfil from './perfil'; // Agrega este import
 import Ganancias from './barra/ganancias';
 import Genealogia from './barra/geneologia/geneologia';
 import Comprar from './barra/comprar/comprar';
 import Ordenes from './barra/ordenes/ordenes'; // Agrega este import
+
+function generarEnlace(uid) {
+  const base = uid;
+  const host = window.location.origin; // toma http://localhost:3000 o https://miapp.com
+  return [
+    //geneologia Derecha
+    `${host}/invitadoR/${base}`,
+
+    //geneologia Izquierda
+    `${host}/invitadoL/${base}`,
+
+    //link de tienda-> shop
+    `${host}/L_Shop/${base}`
+  ];
+}
 
 
 
@@ -70,7 +85,14 @@ function EnlacesPanel({ enlaces }) {
     });
   };
 
-  if (!enlaces || enlaces.length < 3) return null;
+  if (!enlaces || enlaces.length < 3) {
+    return (
+      <div style={{ padding: "20px", textAlign: "center", color: "#666" }}>
+        <p>Generando tus enlaces personalizados...</p>
+        <p>Por favor, recarga la página si no aparecen en unos segundos.</p>
+      </div>
+    );
+  }
   return (
     <div style={{ width: "100%" }}>
       <div className="enlaces-panel">
@@ -122,14 +144,37 @@ function Primera() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setEnlaces(data.enlaces || []);
+          console.log("Datos del usuario desde Firestore:", data);
+          console.log("Enlaces encontrados:", data.enlaces);
+          
+          // Verificar si los enlaces existen y tienen la longitud correcta
+          let enlacesActualizados = data.enlaces || [];
+          
+          if (!enlacesActualizados || enlacesActualizados.length < 3) {
+            console.log("Enlaces faltantes o incompletos, generando nuevos...");
+            enlacesActualizados = generarEnlace(user.uid);
+            
+            // Actualizar en Firestore
+            try {
+              await setDoc(docRef, { ...data, enlaces: enlacesActualizados }, { merge: true });
+              console.log("Enlaces actualizados en Firestore:", enlacesActualizados);
+            } catch (error) {
+              console.error("Error al actualizar enlaces:", error);
+            }
+          }
+          
+          setEnlaces(enlacesActualizados);
           setUsername(data.username || user.displayName || "Usuario");
           setUserData({
             email: user.email,
             username: data.username || user.displayName || "Usuario",
             creationTime: user.metadata?.creationTime,
           });
+        } else {
+          console.log("No se encontró el documento del usuario");
         }
+      } else {
+        console.log("No hay usuario autenticado");
       }
     };
     fetchEnlaces();
@@ -147,7 +192,28 @@ function Primera() {
               <EnlacesPanel enlaces={enlaces} />
             </>
           )}
-          {active === 'network' && <Ordenes />} {/* Cambia aquí para mostrar Ordenes */}
+          {active === 'network' && (
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <h2>Mis Órdenes</h2>
+              <p>Accede a la tienda para ver y gestionar tus órdenes</p>
+              <button 
+                className="advanced-btn"
+                onClick={() => window.location.href = '/usuario/principal2'}
+                style={{ 
+                  padding: '1rem 2rem', 
+                  fontSize: '1.1rem',
+                  background: 'linear-gradient(135deg, #0074D9 0%, #005fa3 100%)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                🛒 Ir a la Tienda
+              </button>
+            </div>
+          )}
           {active === 'genealogia' && <Genealogia />}
           {active === 'ganancias' && <Ganancias />}
           {active === 'perfil' && <Perfil userData={userData} />}

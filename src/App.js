@@ -51,8 +51,8 @@ function Navbar({ user, onLogout, onShowLogin, onShowRegister }) {
             
             
           <div className="navbar-auth">
-            <button className="navbar-login-btn" onClick={onShowLogin}>Login</button>
-            <button className="navbar-register-btn" onClick={onShowRegister}>Register</button>
+            <button className="navbar-login-btn" onClick={onShowLogin}>iniciar sesion </button>
+            <button className="navbar-register-btn" onClick={onShowRegister}>Registrate</button>
           </div>
         </>  
         )}
@@ -133,9 +133,6 @@ function HomeContent({ user }) {
                 onClick={() => window.location.href = "/usuario/home2"}
               >
                 Explorar mi panel
-              </button>
-              <button className="amj-minimal-btn secondary">
-                Ver Demo
               </button>
             </div>
           )}
@@ -335,16 +332,25 @@ function HomeContent({ user }) {
               </div>
             </div>
           </div>
-          <div className="contact-form">
-            <h3>Comienza ahora</h3>
-            <form>
-              <input type="email" placeholder="Tu email" />
-              <input type="text" placeholder="Tu nombre" />
-              <button type="submit" className="contact-btn">
-                Empezar gratis
+          <div className="contact-cta">
+            <h3>Comienza tu crecimiento hoy</h3>
+            <p>Más de 15,000 usuarios confían en AMJ para hacer crecer sus negocios</p>
+            <div className="cta-buttons">
+              <button 
+                className="cta-btn primary"
+                onClick={() => window.location.href = "/usuario/home2"}
+              >
+                Comenzar ahora
               </button>
-            </form>
-            <p className="contact-note">Sin compromisos. Cancela cuando quieras.</p>
+              <button className="cta-btn secondary">
+                Contactar soporte
+              </button>
+            </div>
+            <div className="trust-indicators">
+              <span>✓ Sin costos ocultos</span>
+              <span>✓ Soporte 24/7</span>
+              <span>✓ Resultados garantizados</span>
+            </div>
           </div>
         </div>
       </section>

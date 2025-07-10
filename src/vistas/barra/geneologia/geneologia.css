@@ -1,92 +1,511 @@
-.gene-arbol {
+/* Genealogia.css - Diseño elegante y moderno */
+
+.genealogia-container {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Loading */
+.loading-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2.5rem;
-  gap: 2.5rem;
+  justify-content: center;
+  height: 50vh;
+  color: #0074D9;
 }
 
-.gene-nivel {
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 116, 217, 0.1);
+  border-left: 4px solid #0074D9;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Header */
+.genealogia-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(0, 116, 217, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 116, 217, 0.1);
+}
+
+.genealogia-header h2 {
+  color: #0074D9;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(0, 116, 217, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 16px 16px 0 0;
+}
+
+.stat-card.total::before {
+  background: linear-gradient(90deg, #0074D9, #005fa3);
+}
+
+.stat-card.izquierda::before {
+  background: linear-gradient(90deg, #4caf50, #2e7d32);
+}
+
+.stat-card.derecha::before {
+  background: linear-gradient(90deg, #ff9800, #f57c00);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 116, 217, 0.2);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #0074D9;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #666;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Árbol genealógico */
+.genealogia-tree {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(0, 116, 217, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 116, 217, 0.1);
+}
+
+/* Usuario principal */
+.user-level {
   display: flex;
   justify-content: center;
-  gap: 3rem;
-}
-
-.gene-nodo {
-  background: linear-gradient(135deg, #232526 60%, #2b5876 100%);
-  border-radius: 22px;
-  padding: 1.5rem 2rem;
-  min-width: 180px;
-  box-shadow: 0 4px 24px #21a1f344;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-bottom: 3rem;
   position: relative;
 }
 
-.gene-nodo-yo {
-  border: 3px solid #61dafb;
-  z-index: 2;
+.main-user {
+  background: linear-gradient(135deg, #0074D9 0%, #005fa3 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(0, 116, 217, 0.3);
+  min-width: 300px;
 }
 
-.gene-avatar {
-  width: 54px;
-  height: 54px;
+.user-avatar.main {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  background: linear-gradient(135deg, #61dafb 60%, #21a1f3 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: #232526;
-  font-weight: bold;
-  margin-bottom: 0.7rem;
-  box-shadow: 0 2px 8px #21a1f344;
-}
-
-.gene-nombre {
-  font-size: 1.15rem;
   font-weight: 700;
-  color: #61dafb;
-  margin-bottom: 0.2rem;
+  margin: 0 auto 1rem auto;
+  border: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.gene-email {
-  font-size: 0.95rem;
-  color: #b0eaff;
-  margin-bottom: 0.2rem;
+.user-info {
+  text-align: center;
 }
 
-.gene-label {
-  font-size: 1.1rem;
-  color: #fff;
+.user-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.user-email {
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.user-role {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 0.7rem;
+  display: inline-block;
 }
 
-.gene-vacio {
-  color: #ff5252;
-  font-size: 1rem;
-  font-style: italic;
+/* Líneas de conexión */
+.connection-lines {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 30px;
 }
 
-.gene-invitado {
-  margin-top: 0.7rem;
-  background: #181a1b;
+.line-left,
+.line-right {
+  position: absolute;
+  height: 2px;
+  background: #0074D9;
+  top: 0;
+}
+
+.line-left {
+  left: 0;
+  width: 45%;
+  transform-origin: right;
+  transform: rotate(-20deg);
+}
+
+.line-right {
+  right: 0;
+  width: 45%;
+  transform-origin: left;
+  transform: rotate(20deg);
+}
+
+/* Ramas */
+.branches-level {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.branch-container {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 116, 217, 0.1);
+  min-height: 400px;
+}
+
+.left-branch {
+  border-left: 4px solid #4caf50;
+}
+
+.right-branch {
+  border-left: 4px solid #ff9800;
+}
+
+.branch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(0, 116, 217, 0.1);
+}
+
+.branch-header h3 {
+  color: #0074D9;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.branch-count {
+  background: rgba(0, 116, 217, 0.1);
+  color: #0074D9;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Rama vacía */
+.empty-branch {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #666;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-branch p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.invite-link {
+  background: rgba(0, 116, 217, 0.05);
+  padding: 1rem;
   border-radius: 12px;
-  padding: 0.7rem 1rem;
-  box-shadow: 0 2px 8px #21a1f322;
+  border: 1px solid rgba(0, 116, 217, 0.1);
+}
+
+.invite-link small {
+  color: #0074D9;
+  font-weight: 600;
+}
+
+/* Grid de miembros */
+.members-grid {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 1rem;
 }
 
-@media (max-width: 900px) {
-  .gene-nivel {
-    flex-direction: column;
+.member-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid rgba(0, 116, 217, 0.1);
+  transition: all 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(0, 116, 217, 0.15);
+}
+
+.member-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #0074D9 0%, #005fa3 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.member-name {
+  font-weight: 700;
+  color: #0074D9;
+  font-size: 1.1rem;
+}
+
+.member-email {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.member-date {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.member-position {
+  background: rgba(0, 116, 217, 0.1);
+  color: #0074D9;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.genealogia-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.balance-info,
+.tips-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 116, 217, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 116, 217, 0.1);
+}
+
+.balance-info h4,
+.tips-section h4 {
+  color: #0074D9;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.balance-visual {
+  margin-top: 1rem;
+}
+
+.balance-bar {
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.balance-fill.left {
+  background: linear-gradient(90deg, #4caf50, #2e7d32);
+  transition: width 0.5s ease;
+}
+
+.balance-fill.right {
+  background: linear-gradient(90deg, #ff9800, #f57c00);
+  transition: width 0.5s ease;
+}
+
+.balance-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.tips-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tips-section li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 116, 217, 0.1);
+  color: #666;
+  line-height: 1.5;
+}
+
+.tips-section li:last-child {
+  border-bottom: none;
+}
+
+.tips-section li::before {
+  content: '✓';
+  color: #4caf50;
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .branches-level {
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  .gene-nodo {
-    min-width: 90vw;
+  
+  .genealogia-footer {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .genealogia-container {
+    padding: 1rem;
+  }
+  
+  .genealogia-header {
+    padding: 1.5rem;
+  }
+  
+  .genealogia-header h2 {
+    font-size: 2rem;
+  }
+  
+  .stats-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .genealogia-tree {
+    padding: 1.5rem;
+  }
+  
+  .main-user {
+    min-width: auto;
+    padding: 1.5rem;
+  }
+  
+  .user-avatar.main {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .member-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .member-avatar {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .genealogia-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
+  
+  .branch-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .connection-lines {
+    display: none;
   }
 }
