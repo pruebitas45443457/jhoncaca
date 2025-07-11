@@ -68,6 +68,9 @@ function Login({ onLogin, onCancel }) {
       // Verifica el campo referencia
       if (data.referencia === 1) {
         onLogin({ ...data, uid: user.uid }); // Permite el acceso
+      }else if (data.referencia === 2) {
+        onLogin({ ...data, uid: user.uid});
+        
       } else {
         setError("No tienes permisos para acceder a esta sección.");
       }

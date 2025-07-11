@@ -8,6 +8,11 @@ import Genealogia from './barra/geneologia/geneologia';
 import Comprar from './barra/comprar/comprar';
 import Ordenes from './barra/ordenes/ordenes'; // Agrega este import
 
+import DataAdmin from '../private/datosAdmin';
+import OrdenesGlobales from '../private/OrdenesGlobales';
+import LimpiarOrdenesCompletadas from '../private/LimpiarOrdenesCompletadas';
+
+
 function generarEnlace(uid) {
   const base = uid;
   const host = window.location.origin; // toma http://localhost:3000 o https://miapp.com
@@ -25,35 +30,54 @@ function generarEnlace(uid) {
 
 
 
-function Sidebar({ active, onSelect }) {
+
+
+
+
+
+function Sidebar({ active, onSelect, user }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">MN PRO</div>
       <nav>
         <ul>
           <li className={active === 'dashboard' ? 'active' : ''} onClick={() => onSelect('dashboard')}>
-            <span role="img" aria-label="dashboard">🏠</span> Dashboard
+            🏠 {user?.referencia === 2 ? "Admin Panel" : "Dashboard"}
           </li>
-          <li className={active === 'network' ? 'active' : ''} onClick={() => onSelect('network')}>
-            <span role="img" aria-label="ordenes">📦</span> Mis Órdenes
-          </li>
-          <li className={active === 'genealogia' ? 'active' : ''} onClick={() => onSelect('genealogia')}>
-            <span role="img" aria-label="genealogia">🌳</span> Genealogía
-          </li>
-          <li className={active === 'ganancias' ? 'active' : ''} onClick={() => onSelect('ganancias')}>
-            <span role="img" aria-label="ganancias">💰</span> Ganancias
-          </li>
-          <li className={active === 'comprar' ? 'active' : ''} onClick={() => onSelect('comprar')}>
-            <span role="img" aria-label="comprar">🛒</span> Comprar
-          </li>
-          <li className={active === 'perfil' ? 'active' : ''} onClick={() => onSelect('perfil')}>
-            <span role="img" aria-label="perfil">👤</span> Perfil
-          </li>
+
+          {user?.referencia === 2 ? (
+            <>
+              <li className={active === 'ordenesGlobales' ? 'active' : ''} onClick={() => onSelect('ordenesGlobales')}>
+                🧾 Ordenes Globales
+              </li>
+              {/* Agrega más opciones de admin si quieres */}
+
+            </>
+          ) : (
+            <>
+              <li className={active === 'network' ? 'active' : ''} onClick={() => onSelect('network')}>
+                📦 Mis Órdenes
+              </li>
+              <li className={active === 'genealogia' ? 'active' : ''} onClick={() => onSelect('genealogia')}>
+                🌳 Genealogía
+              </li>
+              <li className={active === 'ganancias' ? 'active' : ''} onClick={() => onSelect('ganancias')}>
+                💰 Ganancias
+              </li>
+              <li className={active === 'comprar' ? 'active' : ''} onClick={() => onSelect('comprar')}>
+                🛒 Comprar
+              </li>
+              <li className={active === 'perfil' ? 'active' : ''} onClick={() => onSelect('perfil')}>
+                👤 Perfil
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </aside>
   );
 }
+
 
 function Topbar({ username }) {
   const initial = username ? username[0].toUpperCase() : "👤";
@@ -130,7 +154,7 @@ function EnlacesPanel({ enlaces }) {
   );
 }
 
-function Primera() {
+function Primera({ user }) {
   const [active, setActive] = useState('dashboard');
   const [enlaces, setEnlaces] = useState([]);
   const [username, setUsername] = useState('');
@@ -138,12 +162,13 @@ function Primera() {
 
   useEffect(() => {
     const fetchEnlaces = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const docRef = doc(db, "users", user.uid);
+      const userAuth = auth.currentUser;
+      if (userAuth) {
+        const docRef = doc(db, "users", userAuth.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
+
           console.log("Datos del usuario desde Firestore:", data);
           console.log("Enlaces encontrados:", data.enlaces);
           
@@ -165,10 +190,12 @@ function Primera() {
           
           setEnlaces(enlacesActualizados);
           setUsername(data.username || user.displayName || "Usuario");
+        
+
           setUserData({
-            email: user.email,
-            username: data.username || user.displayName || "Usuario",
-            creationTime: user.metadata?.creationTime,
+            email: userAuth.email,
+            username: data.username || userAuth.displayName || "Usuario",
+            creationTime: userAuth.metadata?.creationTime,
           });
         } else {
           console.log("No se encontró el documento del usuario");
@@ -182,16 +209,39 @@ function Primera() {
 
   return (
     <div className="layout">
-      <Sidebar active={active} onSelect={setActive} />
+      <LimpiarOrdenesCompletadas />
+      {/* Resto de tu app */}
+      <Sidebar  user={user} active={active} onSelect={setActive} />
       <div className="main-content">
         <Topbar username={username} />
         <div className="content">
-          {active === 'dashboard' && (
+          {/* Admin */}
+          {user?.referencia === 2 && (
             <>
-              <h2>Bienvenido a tu Dashboard</h2>
-              <EnlacesPanel enlaces={enlaces} />
+              {active === 'dashboard' && <DataAdmin user={user} /> }
+              {active === 'ordenesGlobales' && <OrdenesGlobales user={user} />}
+              {/* Puedes agregar más componentes admin aquí */}
             </>
           )}
+
+          {/* Usuario normal */}
+          {user?.referencia !== 2 && (
+            <>
+              {active === 'dashboard' && (
+                <>
+                  <h2>Bienvenido a tu Dashboard</h2>
+                  <EnlacesPanel enlaces={enlaces} />
+
+                </>
+              )}
+              {active === 'network' && <Ordenes />}
+              {active === 'genealogia' && <Genealogia />}
+              {active === 'ganancias' && <Ganancias />}
+              {active === 'perfil' && <Perfil userData={userData} />}
+              {active === 'comprar' && <Comprar />}
+            </>
+          )}
+
           {active === 'network' && (
             <div style={{ textAlign: 'center', padding: '2rem' }}>
               <h2>Mis Órdenes</h2>
@@ -218,10 +268,14 @@ function Primera() {
           {active === 'ganancias' && <Ganancias />}
           {active === 'perfil' && <Perfil userData={userData} />}
           {active === 'comprar' && <Comprar />}
+
         </div>
       </div>
     </div>
   );
 }
+
+
+
 
 export default Primera;

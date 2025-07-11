@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Registro from './vistas/auth/registro';
 import Login from './vistas/auth/login';
@@ -13,6 +13,8 @@ import InvitadoR from './vistas/links/invitacionRigth'; // Asegúrate de importa
 import InvitadoL from './vistas/links/invitacionLeft'; // Asegúrate de importar el componente Invitado
 import ShopL from './vistas/links/LinkTienda'; // Asegúrate de importar el componente Invitado
 import Manual from './vistas/manual/manual'; // Asegúrate de importar el componente Manual
+
+import Admin from './private/indexAdmin'; // Asegúrate de importar el componente Admin
 
 function Navbar({ user, onLogout, onShowLogin, onShowRegister }) {
   return (
@@ -32,30 +34,36 @@ function Navbar({ user, onLogout, onShowLogin, onShowRegister }) {
       </span>
       <div className="navbar-links">
         
-        {user ? (
-          <>
-            
-            <a className="navbar-link" href="#testimonios">Testimonios</a>
-            <a className="navbar-link" href="#contacto">Contacto</a>
+        <div className="navbar-links">
+      {user ? (
+        <>
+          <a className="navbar-link" href="#testimonios">Testimonios</a>
+          <a className="navbar-link" href="#contacto">Contacto</a>
 
-            <span className="welcome advanced-welcome">👋 Hola, {user.username}</span>
-            <button className="advanced-btn" onClick={onLogout}>Cerrar sesión</button>
-          </>
-        ) : (
-          <>
-           <a className="navbar-link" href="/">Inicio</a>
-            <a className="navbar-link" href="#beneficios">Beneficios</a>
-            <a className="navbar-link" href="#testimonios">Testimonios</a>
-            <a className="navbar-link" href="/usuario/home2">Panel</a>
-            <a className="navbar-link" href="#contacto">Contacto</a>
-            
-            
+          {/* Solo para usuarios con referencia === 2 */}
+          {user.referencia === 2 && (
+            <a className="navbar-link" href="/admin">Admin</a>
+          )}
+
+          <span className="welcome advanced-welcome">👋 Hola, {user.username}</span>
+          <button className="advanced-btn" onClick={onLogout}>Cerrar sesión</button>
+        </>
+      ) : (
+        <>
+          <a className="navbar-link" href="/">Inicio</a>
+          <a className="navbar-link" href="#beneficios">Beneficios</a>
+          <a className="navbar-link" href="#testimonios">Testimonios</a>
+          <a className="navbar-link" href="/usuario/home2">Panel</a>
+          <a className="navbar-link" href="#contacto">Contacto</a>
+
           <div className="navbar-auth">
             <button className="navbar-login-btn" onClick={onShowLogin}>iniciar sesion </button>
             <button className="navbar-register-btn" onClick={onShowRegister}>Registrate</button>
           </div>
-        </>  
-        )}
+        </>
+      )}
+    </div>
+
       </div>
     </nav>
   );
@@ -427,7 +435,11 @@ function App() {
             path="/"
             element={
               user ? (
-                <Primera />
+                user.referencia === 2 ? (
+                  <Navigate to="/admin" />
+                ) : (
+                  <Primera />
+                )
               ) : showLogin ? (
                 <Login onLogin={handleLogin} onCancel={() => setShowLogin(false)} />
               ) : showRegister ? (
@@ -437,6 +449,9 @@ function App() {
               )
             }
           />
+
+          
+          
           <Route path="/usuario/home2" element={<Home2 />} />
           <Route path="/producto/:nombre" element={<Producto />} />
           <Route path="/usuario/principal2" element={<Principal2 />} />
@@ -446,6 +461,21 @@ function App() {
           <Route path="/L_Shop/:id" element={<ShopL/>} />
           <Route path="/manual" element={<Manual/>} />
           <Route path="*" element={<h2>404 - Página no encontrada</h2>} />
+
+          
+            <Route
+              path="/admin"
+              element={
+                user?.referencia === 2 ? (
+                  <Admin user={user} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+
+
+          
         </Routes>
       </div>
     </Router>

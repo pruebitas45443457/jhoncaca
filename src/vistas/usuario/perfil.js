@@ -12,6 +12,7 @@ function Perfil() {
   const [cargando, setCargando] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState("");
   const [showLogout, setShowLogout] = useState(false);
+  
 
   useEffect(() => {
     const fetchUser = async () => {
